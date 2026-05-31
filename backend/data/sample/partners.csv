@@ -1,0 +1,81 @@
+partner_id,company_name,contact_name,contact_email,phone,region,city,tier,annual_revenue_inr,deal_count,active_leads,last_activity_date,onboarded_date,product_categories,status
+P-2024-001,BetaNet Technologies,Sneha Patel,sneha@betanett.in,+91-7136505587,North,Delhi,Gold,5895923,25,0,2026-05-09,2024-08-23,"IAM, Vuln Mgmt",Inactive
+P-2024-002,DataGuard Solutions,Meena Verma,meena@dataguar.in,+91-8193448329,South,Coimbatore,Gold,3737831,19,4,2026-04-07,2023-12-25,Firewall,Active
+P-2024-003,CipherTech Technologies,Rajesh Nair,rajesh@cipherte.com,+91-9370996465,East,Patna,Gold,31773071,177,9,2025-12-23,2023-11-04,"Cloud Security, Firewall",Inactive
+P-2024-004,SafeNet Solutions,Priya Joshi,priya@safenets.com,+91-8589915144,South,Hyderabad,Bronze,565462,3,11,2026-04-09,2024-05-16,IAM,Active
+P-2024-005,GuardIT Systems,Arjun Gupta,arjun@guardits.com,+91-7983753977,Central,Bhopal,Silver,2875482,10,1,2026-03-13,2023-08-15,"Firewall, EDR, IAM",Active
+P-2024-006,AlphaSecure Systems,Arjun Nair,arjun@alphasec.co.in,+91-9314889832,East,Bhubaneswar,Bronze,843646,3,8,2026-01-03,2023-06-20,"SIEM, EDR, Cloud Security, DLP",Inactive
+P-2024-007,GuardIT IT Services,Amit Joshi,amit@guarditi.in,+91-9272528809,North,Delhi,Silver,2737607,11,8,2026-01-11,2025-10-21,Cloud Security,Active
+P-2024-008,SafeNet Technologies,Arjun Singh,arjun@safenett.in,+91-9150000991,East,Patna,Bronze,252018,1,5,2026-01-23,2025-04-10,"Vuln Mgmt, Cloud Security, IAM",Active
+P-2024-009,GammaTech Solutions,Deepak Reddy,deepak@gammatec.com,+91-7480468219,South,Hyderabad,Gold,16990139,81,11,2026-03-15,2024-07-11,EDR,Active
+P-2024-010,BetaNet Systems,Priya Reddy,priya@betanets.co.in,+91-7709214891,North,Delhi,Gold,3714923,18,8,2026-01-17,2022-06-20,"EDR, IAM, Vuln Mgmt, SIEM",Active
+P-2024-011,EpsilonIT Networks,Meena Sharma,meena@epsiloni.co.in,+91-9379074819,East,Guwahati,Silver,1138850,13,7,2026-01-02,2024-08-19,Firewall,Active
+P-2024-012,SafeNet Pvt Ltd,Kavita Sharma,kavita@safenetp.com,+91-9315992115,North,Chandigarh,Silver,2064482,9,4,2026-01-06,2022-08-21,"EDR, DLP, Cloud Security, Vuln Mgmt",Inactive
+P-2024-013,DataGuard Systems,Meena Kumar,meena@dataguar.com,+91-8067970820,West,Ahmedabad,Bronze,496880,2,6,2026-04-14,2022-11-11,"EDR, DLP, Vuln Mgmt, SIEM",Active
+P-2024-014,GammaTech Networks,Priya Kumar,priya@gammatec.com,+91-8015242176,North,Jaipur,Gold,3920634,46,5,2026-02-17,2023-02-23,"EDR, DLP, Firewall, Vuln Mgmt",Active
+P-2024-015,EpsilonIT Systems,Vikram Joshi,vikram@epsiloni.co.in,+91-9842715617,West,Ahmedabad,Gold,8901549,31,15,2026-04-23,2024-10-21,"EDR, Firewall, IAM",Active
+P-2024-016,TechSecure Pvt Ltd,Pooja Nair,pooja@techsecu.com,+91-9181106786,North,Lucknow,Gold,2063351,17,2,2026-04-15,2025-06-26,Cloud Security,Active
+P-2024-017,EpsilonIT Networks,Sneha Verma,sneha@epsiloni.co.in,+91-9506853388,West,Mumbai,Gold,3305907,17,18,2026-01-19,2024-02-05,"EDR, Cloud Security, SIEM",Active
+P-2024-018,AlphaSecure IT Services,Vikram Nair,vikram@alphasec.com,+91-8968321319,West,Pune,Bronze,431460,4,19,2026-01-08,2025-04-23,IAM,Active
+P-2024-019,EpsilonIT Technologies,Priya Patel,priya@epsiloni.co.in,+91-8299301222,East,Bhubaneswar,Bronze,1441361,4,19,2025-12-16,2022-11-26,Cloud Security,Active
+P-2024-020,EpsilonIT Solutions,Vikram Sharma,vikram@epsiloni.co.in,+91-8472659626,East,Kolkata,Bronze,738549,5,6,2025-12-08,2024-05-22,"SIEM, Firewall, Cloud Security, DLP",Active
+P-2024-021,NetSafe Solutions,Vikram Singh,vikram@netsafes.co.in,+91-7041531046,North,Delhi,Gold,6002612,31,3,2026-05-13,2025-01-12,Vuln Mgmt,Active
+P-2024-022,DataGuard Solutions,Rajesh Gupta,rajesh@dataguar.com,+91-8519038154,Central,Bhopal,Bronze,789621,3,17,2026-02-17,2025-01-01,"Vuln Mgmt, EDR",Active
+P-2024-023,TechSecure Solutions,Kavita Joshi,kavita@techsecu.co.in,+91-7464267175,South,Kochi,Gold,4744561,16,12,2026-05-23,2023-03-26,"EDR, DLP",Active
+P-2024-024,TechSecure IT Services,Sneha Joshi,sneha@techsecu.in,+91-8508161137,South,Chennai,Bronze,146332,1,20,2026-01-22,2023-08-18,"Firewall, Vuln Mgmt, SIEM",Active
+P-2024-025,SafeNet Networks,Arjun Mehta,arjun@safenetn.co.in,+91-7496694873,East,Kolkata,Gold,3935402,16,12,2026-01-05,2024-10-20,"Firewall, Cloud Security, DLP",Inactive
+P-2024-026,NetSafe Systems,Priya Mehta,priya@netsafes.co.in,+91-8289874320,Central,Bhopal,Gold,4210896,37,16,2026-03-14,2023-07-31,"DLP, Cloud Security, SIEM",Active
+P-2024-027,AlphaSecure Systems,Amit Verma,amit@alphasec.com,+91-8305132983,South,Kochi,Silver,2519395,8,9,2026-04-09,2023-06-17,"DLP, Vuln Mgmt, Cloud Security",Active
+P-2024-028,GammaTech IT Services,Amit Sharma,amit@gammatec.in,+91-7401094954,Central,Jabalpur,Bronze,527477,2,7,2025-12-11,2024-02-17,"Vuln Mgmt, EDR",Active
+P-2024-029,SecureEdge Networks,Priya Nair,priya@secureed.co.in,+91-9990818727,North,Chandigarh,Silver,1232139,9,12,2026-01-26,2023-08-18,"EDR, Cloud Security",Active
+P-2024-030,CyberShield Solutions,Deepak Nair,deepak@cybershi.in,+91-7572687073,North,Jaipur,Bronze,577658,5,14,2025-12-13,2022-11-22,"Vuln Mgmt, DLP, IAM",Active
+P-2024-031,DeltaSystems Networks,Meena Singh,meena@deltasys.com,+91-9738735023,Central,Jabalpur,Gold,5151668,34,8,2026-01-19,2023-02-25,"SIEM, DLP",Inactive
+P-2024-032,InfoProtect Technologies,Kavita Reddy,kavita@infoprot.com,+91-8781844052,East,Bhubaneswar,Silver,1492231,10,13,2026-03-09,2022-10-29,"DLP, Firewall, EDR, Vuln Mgmt",Active
+P-2024-033,DeltaSystems Networks,Arjun Nair,arjun@deltasys.in,+91-8799682701,Central,Indore,Bronze,412860,1,17,2026-01-13,2022-06-27,"DLP, EDR",Active
+P-2024-034,DataGuard Technologies,Arjun Singh,arjun@dataguar.com,+91-7360551585,West,Mumbai,Gold,15443353,60,20,2026-02-12,2025-02-09,"EDR, Firewall, SIEM, DLP",Active
+P-2024-035,NetSafe Systems,Vikram Joshi,vikram@netsafes.co.in,+91-9316787198,West,Ahmedabad,Silver,1137702,13,1,2026-03-04,2024-08-11,Vuln Mgmt,Active
+P-2024-036,CyberShield Solutions,Rajesh Verma,rajesh@cybershi.com,+91-9422230882,North,Delhi,Bronze,874151,3,6,2026-02-02,2024-06-07,"EDR, IAM, Cloud Security",Active
+P-2024-037,InfoProtect Pvt Ltd,Pooja Kumar,pooja@infoprot.in,+91-7851819913,North,Chandigarh,Gold,15892598,89,2,2026-01-01,2024-07-04,Cloud Security,Active
+P-2024-038,GammaTech Networks,Rajesh Mehta,rajesh@gammatec.co.in,+91-9781177100,Central,Indore,Gold,2419707,24,10,2026-05-29,2023-07-07,"Firewall, DLP, SIEM, Cloud Security",Active
+P-2024-039,BetaNet Networks,Vikram Verma,vikram@betanetn.in,+91-8870778191,West,Pune,Gold,7832749,37,18,2026-03-25,2024-01-23,"Vuln Mgmt, Firewall",Active
+P-2024-040,GammaTech Systems,Pooja Verma,pooja@gammatec.in,+91-7780996231,West,Pune,Gold,3340914,15,15,2026-04-08,2023-11-18,"SIEM, Vuln Mgmt, IAM",Active
+P-2024-041,TechSecure Networks,Sneha Sharma,sneha@techsecu.com,+91-9966144543,East,Ranchi,Bronze,808526,3,15,2025-12-18,2023-02-12,"Vuln Mgmt, Firewall, Cloud Security, SIEM",Active
+P-2024-042,AlphaSecure Networks,Kavita Nair,kavita@alphasec.co.in,+91-8420737819,South,Hyderabad,Silver,2344880,8,11,2025-12-04,2023-04-29,"SIEM, Vuln Mgmt, EDR",Active
+P-2024-043,SafeNet IT Services,Deepak Singh,deepak@safeneti.co.in,+91-9532256470,South,Hyderabad,Bronze,174681,1,16,2025-12-31,2024-04-13,Vuln Mgmt,Active
+P-2024-044,GuardIT Technologies,Rajesh Reddy,rajesh@guarditt.co.in,+91-9108307952,South,Hyderabad,Bronze,542779,4,3,2026-05-29,2022-08-26,"DLP, Vuln Mgmt, Cloud Security",Active
+P-2024-045,DeltaSystems Systems,Priya Sharma,priya@deltasys.co.in,+91-7230249217,North,Lucknow,Silver,1589990,6,4,2026-04-24,2022-09-18,"Firewall, EDR, Vuln Mgmt",Active
+P-2024-046,CipherTech Networks,Sneha Reddy,sneha@cipherte.co.in,+91-8841810119,West,Nagpur,Bronze,134394,1,9,2026-01-07,2025-07-13,Vuln Mgmt,Active
+P-2024-047,AlphaSecure Pvt Ltd,Amit Patel,amit@alphasec.in,+91-8214266162,South,Hyderabad,Gold,2603813,18,14,2026-05-14,2024-07-23,"Vuln Mgmt, Cloud Security, IAM",Active
+P-2024-048,SafeNet Networks,Sneha Singh,sneha@safenetn.in,+91-8886149718,South,Kochi,Bronze,409360,1,3,2026-02-02,2024-03-01,"SIEM, IAM, Cloud Security, DLP",Active
+P-2024-049,EpsilonIT Systems,Kavita Verma,kavita@epsiloni.co.in,+91-9521673791,Central,Indore,Bronze,1126301,4,0,2025-12-11,2024-05-11,Vuln Mgmt,Active
+P-2024-050,AlphaSecure Systems,Vikram Singh,vikram@alphasec.in,+91-7391883149,West,Nagpur,Gold,12158153,41,15,2026-03-04,2023-07-31,"SIEM, Cloud Security, Firewall",Active
+P-2024-051,BetaNet Systems,Vikram Joshi,vikram@betanets.com,+91-8350840898,East,Guwahati,Gold,8325148,41,8,2026-03-11,2025-03-21,"Vuln Mgmt, IAM, Firewall, DLP",Active
+P-2024-052,NetSafe Networks,Meena Nair,meena@netsafen.com,+91-8237075775,South,Coimbatore,Gold,3882619,17,14,2025-12-05,2023-02-25,Firewall,Active
+P-2024-053,BetaNet Solutions,Vikram Reddy,vikram@betanets.com,+91-8981903597,Central,Bhopal,Bronze,365444,2,3,2025-12-18,2025-01-02,"Cloud Security, SIEM, IAM, Vuln Mgmt",Active
+P-2024-054,CyberShield Systems,Deepak Singh,deepak@cybershi.co.in,+91-7586298866,West,Surat,Bronze,92291,1,2,2026-03-23,2023-07-18,"Vuln Mgmt, IAM, SIEM",Active
+P-2024-055,DeltaSystems Networks,Pooja Nair,pooja@deltasys.in,+91-8427818730,East,Patna,Gold,7714641,37,17,2026-01-13,2023-10-03,"SIEM, EDR, Cloud Security, DLP",Active
+P-2024-056,NetSafe IT Services,Meena Joshi,meena@netsafei.co.in,+91-7653287375,West,Mumbai,Bronze,987235,3,15,2026-05-23,2025-02-28,"Vuln Mgmt, Firewall, DLP",Inactive
+P-2024-057,BetaNet Solutions,Arjun Singh,arjun@betanets.co.in,+91-7344951668,West,Mumbai,Bronze,549085,2,10,2025-12-11,2022-11-17,"SIEM, Cloud Security, DLP, Firewall",Active
+P-2024-058,CyberShield IT Services,Priya Joshi,priya@cybershi.co.in,+91-8286196999,South,Hyderabad,Gold,3161752,25,0,2026-05-21,2024-01-19,SIEM,Active
+P-2024-059,CyberShield Networks,Arjun Verma,arjun@cybershi.com,+91-9617747281,West,Pune,Gold,3129697,24,12,2025-12-25,2024-07-08,"IAM, EDR, Cloud Security, DLP",Active
+P-2024-060,AlphaSecure Pvt Ltd,Meena Gupta,meena@alphasec.in,+91-9523601252,West,Ahmedabad,Gold,3060945,15,9,2025-12-20,2023-06-29,"DLP, SIEM, EDR",Active
+P-2024-061,CyberShield Systems,Pooja Mehta,pooja@cybershi.co.in,+91-7210643427,West,Mumbai,Gold,3106387,13,19,2026-01-25,2024-04-06,"IAM, SIEM",Active
+P-2024-062,InfoProtect IT Services,Amit Sharma,amit@infoprot.in,+91-7143299564,South,Coimbatore,Gold,20752815,128,18,2026-02-28,2025-02-17,SIEM,Active
+P-2024-063,CyberShield Solutions,Deepak Mehta,deepak@cybershi.com,+91-8103678092,West,Pune,Gold,4131504,13,15,2026-03-18,2023-12-21,DLP,Active
+P-2024-064,DeltaSystems IT Services,Arjun Reddy,arjun@deltasys.in,+91-9304560537,South,Chennai,Bronze,529614,6,3,2026-02-05,2023-10-21,"IAM, DLP, SIEM",Active
+P-2024-065,TechSecure Networks,Deepak Mehta,deepak@techsecu.co.in,+91-8994013856,South,Kochi,Gold,5944032,61,9,2025-12-17,2023-07-31,EDR,Inactive
+P-2024-066,SecureEdge Pvt Ltd,Priya Patel,priya@secureed.co.in,+91-9320109101,North,Lucknow,Silver,1484205,5,13,2026-01-02,2025-01-01,"Cloud Security, Firewall, DLP, IAM",Active
+P-2024-067,BetaNet Technologies,Sneha Nair,sneha@betanett.com,+91-9944974316,East,Kolkata,Silver,1708213,9,11,2026-01-13,2023-11-10,DLP,Active
+P-2024-068,SafeNet IT Services,Sneha Verma,sneha@safeneti.co.in,+91-7889734128,North,Jaipur,Gold,4169535,14,18,2026-04-07,2024-07-24,"Vuln Mgmt, EDR, IAM",Inactive
+P-2024-069,TrustNet Technologies,Amit Sharma,amit@trustnet.in,+91-8021908455,South,Chennai,Gold,2786599,33,18,2026-03-11,2025-10-12,"SIEM, Firewall",Active
+P-2024-070,SafeNet IT Services,Priya Nair,priya@safeneti.com,+91-8941348507,West,Nagpur,Silver,1677960,7,16,2026-04-06,2022-06-03,Cloud Security,Active
+P-2024-071,SecureEdge IT Services,Rajesh Kumar,rajesh@secureed.in,+91-7315640205,Central,Raipur,Silver,1672542,6,2,2026-03-11,2022-06-17,"Firewall, EDR",Active
+P-2024-072,BetaNet Technologies,Arjun Verma,arjun@betanett.in,+91-7425968237,Central,Gwalior,Silver,2224741,9,3,2025-12-16,2022-10-11,"DLP, Vuln Mgmt",Active
+P-2024-073,DeltaSystems Systems,Arjun Joshi,arjun@deltasys.co.in,+91-8094743340,West,Ahmedabad,Gold,3943560,24,11,2026-04-23,2023-03-18,Firewall,Active
+P-2024-074,SafeNet IT Services,Kavita Singh,kavita@safeneti.co.in,+91-8415818695,North,Jaipur,Silver,2625078,11,3,2026-02-16,2023-11-20,"Vuln Mgmt, Cloud Security, Firewall, SIEM",Active
+P-2024-075,CipherTech Networks,Sneha Singh,sneha@cipherte.in,+91-9389142017,East,Kolkata,Gold,3005437,27,11,2026-05-03,2024-04-22,"Vuln Mgmt, DLP",Active
+P-2024-076,AlphaSecure IT Services,Deepak Kumar,deepak@alphasec.in,+91-7124352982,Central,Gwalior,Gold,3819996,14,5,2026-03-24,2024-02-20,"SIEM, Firewall, EDR",Active
+P-2024-077,SafeNet Solutions,Rajesh Sharma,rajesh@safenets.in,+91-8464137110,Central,Jabalpur,Gold,3781110,19,5,2026-02-27,2024-02-14,"Vuln Mgmt, IAM, Cloud Security",Inactive
+P-2024-078,GuardIT Networks,Rajesh Sharma,rajesh@guarditn.co.in,+91-8898565319,North,Chandigarh,Bronze,494951,2,13,2026-03-24,2024-08-29,SIEM,Active
+P-2024-079,SecureEdge Networks,Vikram Kumar,vikram@secureed.com,+91-9136253713,East,Ranchi,Gold,4262363,38,13,2026-04-18,2025-02-22,"IAM, Cloud Security, EDR, SIEM",Inactive
+P-2024-080,TechSecure Systems,Priya Mehta,priya@techsecu.co.in,+91-8793981895,North,Jaipur,Silver,2857875,10,9,2026-05-03,2023-08-07,SIEM,Active
