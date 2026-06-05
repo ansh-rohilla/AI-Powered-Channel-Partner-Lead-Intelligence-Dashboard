@@ -16,9 +16,12 @@ def create_app(config_class=Config):
     CORS(app)
     cache.init_app(app, config={'CACHE_TYPE': 'SimpleCache'})
 
-    # Import models to ensure they are registered with SQLAlchemy
-    from app.models.partner import Partner
-    from app.models.lead import Lead
+    # Import and register Blueprints
+    from app.routes.partners import partners_bp
+    from app.routes.leads import leads_bp
+
+    app.register_blueprint(partners_bp, url_prefix='/api/partners')
+    app.register_blueprint(leads_bp, url_prefix='/api/leads')
 
     with app.app_context():
         # Create database tables if they do not exist
