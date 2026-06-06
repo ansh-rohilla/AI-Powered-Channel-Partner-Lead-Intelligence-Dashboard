@@ -2,6 +2,7 @@ import os
 import sys
 import unittest
 import json
+from io import BytesIO
 from datetime import date
 
 # Add parent directory to path so app module can be found
@@ -138,6 +139,90 @@ class TestEndpoints(unittest.TestCase):
         self.assertEqual(updated_lead['status'], 'Converted')
         self.assertEqual(updated_lead['converted'], 1)
         self.assertIsNotNone(updated_lead['conversion_date'])
+
+    def test_analytics_endpoints(self):
+        # 1. Summary
+        res_sum = self.client.get('/api/analytics/summary')
+        self.assertEqual(res_sum.status_code, 200)
+        data_sum = json.loads(res_sum.data)
+        self.assertTrue(data_sum['success'])
+        self.assertIn('active_partners', data_sum['data'])
+        self.assertIn('pipeline_value_inr', data_sum['data'])
+
+        # 2. Regional
+        res_reg = self.client.get('/api/analytics/regional')
+        self.assertEqual(res_reg.status_code, 200)
+        data_reg = json.loads(res_reg.data)
+        self.assertTrue(data_reg['success'])
+        self.assertEqual(len(data_reg['data']), 5)  # 5 regions
+
+        # 3. Trends
+        res_trends = self.client.get('/api/analytics/trends')
+        self.assertEqual(res_trends.status_code, 200)
+        data_trends = json.loads(res_trends.data)
+        self.assertTrue(data_trends['success'])
+
+        # 4. Tier Breakdown
+        res_tier = self.client.get('/api/analytics/tier-breakdown')
+        self.assertEqual(res_tier.status_code, 200)
+        data_tier = json.loads(res_tier.data)
+        self.assertTrue(data_tier['success'])
+
+    def test_upload_endpoints(self):
+        # 1. Partners upload CSV
+        csv_partners = (
+            "company_name,contact_name,contact_email,phone,region,city,annual_revenue_inr,deal_count,onboarded_date\n"
+            "Bulk Upload Partner Inc,Alice Miller,alice@bulkpartner.com,+91-9000800700,North,Jaipur,950000.0,6,2025-03-01\n"
+        )
+        file_partners = (BytesIO(csv_partners.encode('utf-8')), 'partners.csv')
+        res_p = self.client.post('/api/upload/partners', data={'file': file_partners}, content_type='multipart/form-data')
+        self.assertEqual(res_p.status_code, 200)
+        data_p = json.loads(res_p.data)
+        self.assertTrue(data_p['success'])
+        self.assertEqual(data_p['inserted'], 1)
+
+        # Get the inserted partner's ID to upload a lead for them
+        new_partner = Partner.query.filter_by(contact_email='alice@bulkpartner.com').first()
+        self.assertIsNotNone(new_partner)
+        self.assertEqual(new_partner.tier, 'Silver')  # 950000 rev & 6 deals -> Silver
+
+        # 2. Leads upload CSV
+        csv_leads = (
+            "partner_id,company_name,contact_name,contact_email,region,lead_source,product_interest,deal_value_inr,status,created_date\n"
+            f"{new_partner.partner_id},Bulk Lead Ltd,Bob Johnson,bob@bulklead.com,North,Web,Firewall,200000.0,New,2026-05-15\n"
+        )
+        file_leads = (BytesIO(csv_leads.encode('utf-8')), 'leads.csv')
+        res_l = self.client.post('/api/upload/leads', data={'file': file_leads}, content_type='multipart/form-data')
+        self.assertEqual(res_l.status_code, 200)
+        data_l = json.loads(res_l.data)
+        self.assertTrue(data_l['success'])
+        self.assertEqual(data_l['inserted'], 1)
+
+    def test_delete_endpoints(self):
+        # Create temporary partner
+        p = Partner(
+            partner_id="P-TEMP-99",
+            company_name="Delete Partner",
+            contact_name="Temp",
+            contact_email="temp@deletepartner.com",
+            region="North",
+            city="Delhi",
+            tier="Bronze",
+            onboarded_date=date(2025, 1, 1),
+            status="Active"
+        )
+        db.session.add(p)
+        db.session.commit()
+
+        # Delete it
+        res_del = self.client.delete(f'/api/partners/P-TEMP-99')
+        self.assertEqual(res_del.status_code, 200)
+        data_del = json.loads(res_del.data)
+        self.assertTrue(data_del['success'])
+
+        # Verify gone
+        partner_check = db.session.get(Partner, "P-TEMP-99")
+        self.assertIsNone(partner_check)
 
 if __name__ == '__main__':
     unittest.main()

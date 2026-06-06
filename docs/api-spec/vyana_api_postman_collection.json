@@ -1,0 +1,460 @@
+{
+	"info": {
+		"_postman_id": "c13ab6fd-8d2a-4318-b2ef-b5826f0bb4d7",
+		"name": "Vyana Innovations BI Dashboard API",
+		"description": "Postman Collection for the AI-Powered Channel Partner & Lead Intelligence Dashboard REST API. Set the `base_url` variable to your local Flask server URL (typically `http://localhost:5000`).",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Status",
+			"item": [
+				{
+					"name": "Get API Status",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/status",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"status"
+							]
+						},
+						"description": "Retrieves the operational health and status of the Flask backend API."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Partners",
+			"item": [
+				{
+					"name": "List Partners",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/partners?tier=Gold&region=North&status=Active&page=1&per_page=10&sort_by=annual_revenue_inr&sort_dir=desc",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"partners"
+							],
+							"query": [
+								{
+									"key": "tier",
+									"value": "Gold",
+									"description": "Filter by partner tier (Gold, Silver, Bronze)"
+								},
+								{
+									"key": "region",
+									"value": "North",
+									"description": "Filter by region (North, South, East, West, Central)"
+								},
+								{
+									"key": "status",
+									"value": "Active",
+									"description": "Filter by operational status (Active, Inactive)"
+								},
+								{
+									"key": "page",
+									"value": "1",
+									"description": "Page number (defaults to 1)"
+								},
+								{
+									"key": "per_page",
+									"value": "10",
+									"description": "Items per page (defaults to 20)"
+								},
+								{
+									"key": "sort_by",
+									"value": "annual_revenue_inr",
+									"description": "Sort column (company_name, annual_revenue_inr, deal_count, etc.)"
+								},
+								{
+									"key": "sort_dir",
+									"value": "desc",
+									"description": "Sort direction (asc, desc)"
+								}
+							]
+						},
+						"description": "Returns a paginated list of channel partners, supporting sorting, text searches (`q`), and filters."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Partner Details",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/partners/P-2024-001",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"partners",
+								"P-2024-001"
+							]
+						},
+						"description": "Retrieves the detailed record of a single partner, including their complete lead assignment history."
+					},
+					"response": []
+				},
+				{
+					"name": "Update Partner",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"company_name\": \"Secure Edge Corp Updated\",\n    \"contact_name\": \"Rajesh Kumar\",\n    \"annual_revenue_inr\": 2200000.0,\n    \"deal_count\": 13\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/partners/P-2024-001",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"partners",
+								"P-2024-001"
+							]
+						},
+						"description": "Updates fields on an existing partner record. If revenue or deals change, the tier is automatically recalculated."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Partner",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/partners/P-2024-001",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"partners",
+								"P-2024-001"
+							]
+						},
+						"description": "Deletes a partner and cascades deletes to delete all of their assigned leads."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Leads",
+			"item": [
+				{
+					"name": "List Leads",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/leads?status=New&region=North&page=1&per_page=10",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"leads"
+							],
+							"query": [
+								{
+									"key": "status",
+									"value": "New"
+								},
+								{
+									"key": "region",
+									"value": "North"
+								},
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "per_page",
+									"value": "10"
+								}
+							]
+						},
+						"description": "Returns a paginated list of leads, supporting filters, sorting, and full-text searches."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Lead Details",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/leads/L-2026-0001",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"leads",
+								"L-2026-0001"
+							]
+						},
+						"description": "Retrieves the detail parameters of a single lead."
+					},
+					"response": []
+				},
+				{
+					"name": "Create Lead",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"partner_id\": \"P-2024-001\",\n    \"company_name\": \"InfoGuard Networks\",\n    \"contact_name\": \"Sanjay Sharma\",\n    \"contact_email\": \"sanjay@infoguard.com\",\n    \"region\": \"North\",\n    \"lead_source\": \"Web\",\n    \"product_interest\": \"Firewall\",\n    \"deal_value_inr\": 350000.0,\n    \"status\": \"New\",\n    \"created_date\": \"2026-06-01\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/leads",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"leads"
+							]
+						},
+						"description": "Creates a new lead. Generates a unique sequential ID and automatically links it to a partner."
+					},
+					"response": []
+				},
+				{
+					"name": "Update Lead",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"status\": \"Converted\",\n    \"notes\": \"Closed deal successfully after follow-up.\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/leads/L-2026-0001",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"leads",
+								"L-2026-0001"
+							]
+						},
+						"description": "Updates fields on a lead. Changing the status to 'Converted' automatically triggers internal conversion flags and sets the conversion date."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Lead",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/leads/L-2026-0001",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"leads",
+								"L-2026-0001"
+							]
+						},
+						"description": "Deletes a lead from the CRM pipeline."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Uploads",
+			"item": [
+				{
+					"name": "Upload Partners File",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": []
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/api/upload/partners",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"upload",
+								"partners"
+							]
+						},
+						"description": "Uploads a CSV or Excel sheet of partners. Parses row-by-row, validates data types, handles updates on duplicate email matches, and inserts new records."
+					},
+					"response": []
+				},
+				{
+					"name": "Upload Leads File",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": []
+								}
+							]
+						},
+						"url": {
+							"raw": "{{base_url}}/api/upload/leads",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"upload",
+								"leads"
+							]
+						},
+						"description": "Uploads a CSV or Excel sheet of leads. Verifies that parent partners exist, validates fields, and logs detailed rows statistics."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Analytics",
+			"item": [
+				{
+					"name": "Get Summary KPIs",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/analytics/summary",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"analytics",
+								"summary"
+							]
+						},
+						"description": "Returns high-level KPI cards: total active partners, active leads, pipeline conversion rate, and pipeline value."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Regional Distribution",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/analytics/regional",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"analytics",
+								"regional"
+							]
+						},
+						"description": "Returns partner and lead counts aggregated by geographical operating regions."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Trends",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/analytics/trends",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"analytics",
+								"trends"
+							]
+						},
+						"description": "Returns a rolling 12-week time-series of weekly lead volumes and conversion rates."
+					},
+					"response": []
+				},
+				{
+					"name": "Get Tier Breakdown",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/api/analytics/tier-breakdown",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"analytics",
+								"tier-breakdown"
+							]
+						},
+						"description": "Returns partners count, total revenue, and deal counts aggregated by partner tier."
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:5000",
+			"type": "string"
+		}
+	]
+}

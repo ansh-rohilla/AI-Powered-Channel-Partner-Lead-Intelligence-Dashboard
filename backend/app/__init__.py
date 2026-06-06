@@ -50,9 +50,13 @@ def create_app(config_class=Config):
     # 2. Import and register Blueprints
     from app.routes.partners import partners_bp
     from app.routes.leads import leads_bp
+    from app.routes.uploads import uploads_bp
+    from app.routes.analytics import analytics_bp
 
     app.register_blueprint(partners_bp, url_prefix='/api/partners')
     app.register_blueprint(leads_bp, url_prefix='/api/leads')
+    app.register_blueprint(uploads_bp, url_prefix='/api/upload')
+    app.register_blueprint(analytics_bp, url_prefix='/api/analytics')
 
     with app.app_context():
         # Create database tables if they do not exist

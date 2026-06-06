@@ -3,6 +3,7 @@ from app.database import db
 from app.models.partner import Partner
 from app.schemas.partner_schema import PartnerSchema
 from app.schemas.lead_schema import LeadSchema
+from app.services.tier_service import calculate_tier
 
 partners_bp = Blueprint('partners', __name__)
 
@@ -102,6 +103,10 @@ def update_partner(partner_id):
     for field, val in validated_data.items():
         setattr(partner, field, val)
 
+    # Auto-calculate tier if revenue or deals changed
+    if 'annual_revenue_inr' in validated_data or 'deal_count' in validated_data:
+        partner.tier = calculate_tier(partner.annual_revenue_inr, partner.deal_count)
+
     try:
         db.session.commit()
         return jsonify({
@@ -112,3 +117,17 @@ def update_partner(partner_id):
     except Exception as e:
         db.session.rollback()
         return jsonify({"success": False, "message": f"Error updating partner: {str(e)}"}), 500
+
+@partners_bp.route('/<string:partner_id>', methods=['DELETE'])
+def delete_partner(partner_id):
+    partner = db.session.get(Partner, partner_id)
+    if not partner:
+        return jsonify({"success": False, "message": "Partner not found"}), 404
+
+    try:
+        db.session.delete(partner)
+        db.session.commit()
+        return jsonify({"success": True, "message": f"Partner '{partner_id}' and all associated leads deleted successfully"}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"success": False, "message": f"Error deleting partner: {str(e)}"}), 500

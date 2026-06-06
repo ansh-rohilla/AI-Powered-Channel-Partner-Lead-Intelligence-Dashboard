@@ -69,6 +69,17 @@ def get_leads():
         }
     }), 200
 
+@leads_bp.route('/<string:lead_id>', methods=['GET'])
+def get_lead(lead_id):
+    lead = db.session.get(Lead, lead_id)
+    if not lead:
+        return jsonify({"success": False, "message": "Lead not found"}), 404
+    
+    return jsonify({
+        "success": True,
+        "data": LeadSchema().dump(lead)
+    }), 200
+
 @leads_bp.route('', methods=['POST'])
 def create_lead():
     data = request.get_json() or {}
@@ -161,3 +172,17 @@ def update_lead(lead_id):
     except Exception as e:
         db.session.rollback()
         return jsonify({"success": False, "message": f"Error updating lead: {str(e)}"}), 500
+
+@leads_bp.route('/<string:lead_id>', methods=['DELETE'])
+def delete_lead(lead_id):
+    lead = db.session.get(Lead, lead_id)
+    if not lead:
+        return jsonify({"success": False, "message": "Lead not found"}), 404
+
+    try:
+        db.session.delete(lead)
+        db.session.commit()
+        return jsonify({"success": True, "message": f"Lead '{lead_id}' deleted successfully"}), 200
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"success": False, "message": f"Error deleting lead: {str(e)}"}), 500

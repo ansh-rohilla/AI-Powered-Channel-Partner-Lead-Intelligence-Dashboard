@@ -8,7 +8,7 @@ class PartnerSchema(Schema):
     phone = fields.Str(validate=validate.Length(max=20), allow_none=True)
     region = fields.Str(required=True, validate=validate.OneOf(["North", "South", "East", "West", "Central"]))
     city = fields.Str(required=True, validate=validate.Length(min=1, max=100))
-    tier = fields.Str(required=True, validate=validate.OneOf(["Gold", "Silver", "Bronze"]))
+    tier = fields.Str(required=False, validate=validate.OneOf(["Gold", "Silver", "Bronze"]))
     annual_revenue_inr = fields.Float(validate=validate.Range(min=0.0))
     deal_count = fields.Int(validate=validate.Range(min=0))
     active_leads = fields.Int(validate=validate.Range(min=0))
