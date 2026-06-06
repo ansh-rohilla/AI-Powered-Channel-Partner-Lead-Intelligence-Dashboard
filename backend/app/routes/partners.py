@@ -1,35 +1,72 @@
 from flask import Blueprint, request, jsonify
 from app.database import db
 from app.models.partner import Partner
-from datetime import datetime
+from app.schemas.partner_schema import PartnerSchema
+from app.schemas.lead_schema import LeadSchema
 
 partners_bp = Blueprint('partners', __name__)
 
-def parse_date(date_str):
-    if not date_str or str(date_str).strip() in ('', 'None', 'null'):
-        return None
-    try:
-        return datetime.strptime(str(date_str).split('T')[0], "%Y-%m-%d").date()
-    except Exception:
-        return None
-
 @partners_bp.route('', methods=['GET'])
 def get_partners():
+    # 1. Parse filter parameters
     tier = request.args.get('tier')
     region = request.args.get('region')
     status = request.args.get('status')
+    search_query = request.args.get('q')
+    
+    # 2. Parse sorting parameters
+    sort_by = request.args.get('sort_by', 'company_name')
+    sort_dir = request.args.get('sort_dir', 'asc')
+    
+    # 3. Parse pagination parameters
+    page = request.args.get('page', 1, type=int)
+    per_page = request.args.get('per_page', 20, type=int)
 
     query = Partner.query
 
+    # Apply filters
     if tier:
         query = query.filter(Partner.tier == tier)
     if region:
         query = query.filter(Partner.region == region)
     if status:
         query = query.filter(Partner.status == status)
+    if search_query:
+        query = query.filter(
+            (Partner.company_name.ilike(f"%{search_query}%")) |
+            (Partner.contact_name.ilike(f"%{search_query}%"))
+        )
 
-    partners = query.all()
-    return jsonify([p.to_dict() for p in partners]), 200
+    # Apply sorting
+    sort_column = getattr(Partner, sort_by, None)
+    if sort_column is None:
+        sort_column = Partner.company_name
+        
+    if sort_dir == 'desc':
+        query = query.order_by(sort_column.desc())
+    else:
+        query = query.order_by(sort_column.asc())
+
+    # Execute pagination
+    pagination = query.paginate(page=page, per_page=per_page, error_out=False)
+    partners = pagination.items
+
+    # Serialize
+    schema = PartnerSchema(many=True)
+    serialized_partners = schema.dump(partners)
+
+    return jsonify({
+        "success": True,
+        "data": serialized_partners,
+        "pagination": {
+            "page": pagination.page,
+            "per_page": pagination.per_page,
+            "total_items": pagination.total,
+            "total_pages": pagination.pages,
+            "has_next": pagination.has_next,
+            "has_prev": pagination.has_prev
+        }
+    }), 200
 
 @partners_bp.route('/<string:partner_id>', methods=['GET'])
 def get_partner(partner_id):
@@ -37,11 +74,17 @@ def get_partner(partner_id):
     if not partner:
         return jsonify({"success": False, "message": "Partner not found"}), 404
 
-    # Build response with detailed partner info and lead history
-    partner_data = partner.to_dict()
-    partner_data['leads'] = [lead.to_dict() for lead in partner.leads]
+    # Serialize partner details and lead history
+    partner_schema = PartnerSchema()
+    lead_schema = LeadSchema(many=True)
 
-    return jsonify(partner_data), 200
+    partner_data = partner_schema.dump(partner)
+    partner_data['leads'] = lead_schema.dump(partner.leads)
+
+    return jsonify({
+        "success": True,
+        "data": partner_data
+    }), 200
 
 @partners_bp.route('/<string:partner_id>', methods=['PUT'])
 def update_partner(partner_id):
@@ -51,36 +94,21 @@ def update_partner(partner_id):
 
     data = request.get_json() or {}
 
-    # List of allowed update fields
-    allowed_fields = [
-        'company_name', 'contact_name', 'contact_email', 'phone',
-        'region', 'city', 'tier', 'annual_revenue_inr', 'deal_count',
-        'active_leads', 'product_categories', 'status'
-    ]
+    # Partial load and validation using Marshmallow
+    schema = PartnerSchema(partial=True)
+    validated_data = schema.load(data)
 
-    for field in allowed_fields:
-        if field in data:
-            val = data[field]
-            # Handle float and int parsing safely
-            if field == 'annual_revenue_inr':
-                val = float(val) if val is not None else 0.0
-            elif field == 'deal_count':
-                val = int(val) if val is not None else 0
-            elif field == 'active_leads':
-                val = int(val) if val is not None else 0
-            setattr(partner, field, val)
-
-    # Date fields need parsing
-    if 'last_activity_date' in data:
-        partner.last_activity_date = parse_date(data['last_activity_date'])
-    if 'onboarded_date' in data:
-        parsed_onboarded = parse_date(data['onboarded_date'])
-        if parsed_onboarded:
-            partner.onboarded_date = parsed_onboarded
+    # Update columns
+    for field, val in validated_data.items():
+        setattr(partner, field, val)
 
     try:
         db.session.commit()
-        return jsonify({"success": True, "message": "Partner updated successfully", "partner": partner.to_dict()}), 200
+        return jsonify({
+            "success": True,
+            "message": "Partner updated successfully",
+            "partner": PartnerSchema().dump(partner)
+        }), 200
     except Exception as e:
         db.session.rollback()
         return jsonify({"success": False, "message": f"Error updating partner: {str(e)}"}), 500

@@ -1,0 +1,21 @@
+from marshmallow import Schema, fields, validate
+
+class LeadSchema(Schema):
+    lead_id = fields.Str(required=False)
+    partner_id = fields.Str(required=True)
+    company_name = fields.Str(required=True, validate=validate.Length(min=1, max=255))
+    contact_name = fields.Str(required=True, validate=validate.Length(min=1, max=255))
+    contact_email = fields.Email(required=True, validate=validate.Length(max=255))
+    region = fields.Str(required=True, validate=validate.OneOf(["North", "South", "East", "West", "Central"]))
+    lead_source = fields.Str(required=True, validate=validate.OneOf(["Referral", "Event", "Cold Call", "Web", "Partner Referral", "LinkedIn"]))
+    product_interest = fields.Str(required=True, validate=validate.Length(min=1, max=100))
+    deal_value_inr = fields.Float(required=True, validate=validate.Range(min=0.0))
+    status = fields.Str(validate=validate.OneOf(["New", "Contacted", "Qualified", "Converted", "Lost"]))
+    created_date = fields.Date(required=True)
+    last_contacted = fields.Date(allow_none=True)
+    follow_up_count = fields.Int(validate=validate.Range(min=0))
+    time_to_first_contact = fields.Int(validate=validate.Range(min=0), allow_none=True)
+    converted = fields.Int(validate=validate.OneOf([0, 1]))
+    conversion_date = fields.Date(allow_none=True)
+    ml_score = fields.Float(validate=validate.Range(min=0.0, max=100.0), allow_none=True)
+    notes = fields.Str(allow_none=True)
