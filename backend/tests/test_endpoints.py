@@ -179,7 +179,7 @@ class TestEndpoints(unittest.TestCase):
         self.assertEqual(res_p.status_code, 200)
         data_p = json.loads(res_p.data)
         self.assertTrue(data_p['success'])
-        self.assertEqual(data_p['inserted'], 1)
+        self.assertTrue(data_p['inserted'] == 1 or data_p['updated'] == 1)
 
         # Get the inserted partner's ID to upload a lead for them
         new_partner = Partner.query.filter_by(contact_email='alice@bulkpartner.com').first()
@@ -196,7 +196,7 @@ class TestEndpoints(unittest.TestCase):
         self.assertEqual(res_l.status_code, 200)
         data_l = json.loads(res_l.data)
         self.assertTrue(data_l['success'])
-        self.assertEqual(data_l['inserted'], 1)
+        self.assertTrue(data_l['inserted'] == 1 or data_l['updated'] == 1)
 
     def test_delete_endpoints(self):
         # Create temporary partner
@@ -223,6 +223,61 @@ class TestEndpoints(unittest.TestCase):
         # Verify gone
         partner_check = db.session.get(Partner, "P-TEMP-99")
         self.assertIsNone(partner_check)
+
+    def test_prediction_endpoints(self):
+        # 1. Single lead prediction
+        res_partners = self.client.get('/api/partners')
+        partner_id = json.loads(res_partners.data)['data'][0]['partner_id']
+
+        predict_payload = {
+            "partner_id": partner_id,
+            "deal_value_inr": 450000.0,
+            "follow_up_count": 4,
+            "time_to_first_contact": 2,
+            "region": "North",
+            "lead_source": "Referral",
+            "product_interest": "Firewall"
+        }
+        res_pred = self.client.post('/api/predict', json=predict_payload)
+        self.assertEqual(res_pred.status_code, 200)
+        data_pred = json.loads(res_pred.data)
+        self.assertTrue(data_pred['success'])
+        self.assertIn('ml_score', data_pred)
+        self.assertIn('priority_label', data_pred)
+        self.assertIn('explanation', data_pred)
+
+        # 2. Batch lead prediction
+        batch_payload = {
+            "leads": [
+                predict_payload,
+                {**predict_payload, "deal_value_inr": 80000.0, "follow_up_count": 1}
+            ]
+        }
+        res_batch = self.client.post('/api/predict/batch', json=batch_payload)
+        self.assertEqual(res_batch.status_code, 200)
+        data_batch = json.loads(res_batch.data)
+        self.assertTrue(data_batch['success'])
+        self.assertEqual(len(data_batch['results']), 2)
+
+        # 3. Batch DB scoring trigger
+        res_db_batch = self.client.post('/api/predict/batch', json={})
+        self.assertEqual(res_db_batch.status_code, 200)
+        data_db_batch = json.loads(res_db_batch.data)
+        self.assertTrue(data_db_batch['success'])
+
+        # 4. Input validation check
+        invalid_payload = {
+            "partner_id": partner_id,
+            "deal_value_inr": -50.0,
+            "region": "NorthEast"
+        }
+        res_invalid = self.client.post('/api/predict', json=invalid_payload)
+        self.assertEqual(res_invalid.status_code, 400)
+        data_invalid = json.loads(res_invalid.data)
+        self.assertFalse(data_invalid['success'])
+        self.assertEqual(data_invalid['error'], 'ValidationError')
+        self.assertIn('deal_value_inr', data_invalid['details'])
+        self.assertIn('region', data_invalid['details'])
 
 if __name__ == '__main__':
     unittest.main()

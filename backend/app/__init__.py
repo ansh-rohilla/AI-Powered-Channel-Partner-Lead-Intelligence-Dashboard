@@ -52,15 +52,25 @@ def create_app(config_class=Config):
     from app.routes.leads import leads_bp
     from app.routes.uploads import uploads_bp
     from app.routes.analytics import analytics_bp
+    from app.routes.predictions import predictions_bp
 
     app.register_blueprint(partners_bp, url_prefix='/api/partners')
     app.register_blueprint(leads_bp, url_prefix='/api/leads')
     app.register_blueprint(uploads_bp, url_prefix='/api/upload')
     app.register_blueprint(analytics_bp, url_prefix='/api/analytics')
+    app.register_blueprint(predictions_bp, url_prefix='/api/predict')
 
     with app.app_context():
         # Create database tables if they do not exist
         db.create_all()
+        
+        # Pre-load ML models at startup to ensure service readiness
+        try:
+            from app.services.prediction_service import load_artifacts
+            load_artifacts()
+            app.logger.info("ML prediction models loaded successfully at startup.")
+        except Exception as e:
+            app.logger.error(f"Failed to load ML models at startup: {str(e)}")
 
     # 3. Request Logging Middleware
     @app.before_request

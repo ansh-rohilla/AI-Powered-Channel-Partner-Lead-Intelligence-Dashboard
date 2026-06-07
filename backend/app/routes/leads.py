@@ -106,6 +106,23 @@ def create_lead():
     if converted and not conversion_date:
         conversion_date = date.today()
 
+    # Calculate ML score automatically
+    try:
+        from app.services.prediction_service import predict_single_lead
+        pred_data = {
+            "partner_id": validated_data['partner_id'],
+            "deal_value_inr": validated_data['deal_value_inr'],
+            "follow_up_count": validated_data.get('follow_up_count', 0),
+            "time_to_first_contact": validated_data.get('time_to_first_contact'),
+            "region": validated_data['region'],
+            "lead_source": validated_data['lead_source'],
+            "product_interest": validated_data['product_interest']
+        }
+        res = predict_single_lead(pred_data)
+        ml_score = res['ml_score']
+    except Exception:
+        ml_score = validated_data.get('ml_score')
+
     lead = Lead(
         lead_id=lead_id,
         partner_id=validated_data['partner_id'],
@@ -123,7 +140,7 @@ def create_lead():
         time_to_first_contact=validated_data.get('time_to_first_contact'),
         converted=converted,
         conversion_date=conversion_date,
-        ml_score=validated_data.get('ml_score'),
+        ml_score=ml_score,
         notes=validated_data.get('notes', '')
     )
 
@@ -161,6 +178,25 @@ def update_lead(lead_id):
         else:
             lead.converted = 0
             lead.conversion_date = None
+
+    # Recalculate ML score dynamically if features changed
+    trigger_fields = ['deal_value_inr', 'follow_up_count', 'time_to_first_contact', 'region', 'lead_source', 'product_interest']
+    if any(f in validated_data for f in trigger_fields):
+        try:
+            from app.services.prediction_service import predict_single_lead
+            pred_data = {
+                "partner_id": lead.partner_id,
+                "deal_value_inr": lead.deal_value_inr,
+                "follow_up_count": lead.follow_up_count,
+                "time_to_first_contact": lead.time_to_first_contact,
+                "region": lead.region,
+                "lead_source": lead.lead_source,
+                "product_interest": lead.product_interest
+            }
+            res = predict_single_lead(pred_data)
+            lead.ml_score = res['ml_score']
+        except Exception:
+            pass
 
     try:
         db.session.commit()
