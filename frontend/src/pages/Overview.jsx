@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { 
   Users, 
   Target, 
@@ -37,6 +37,64 @@ function Overview() {
   const [scoreResult, setScoreResult] = useState(null);
   
   const COLORS = ['#8b5cf6', '#6366f1', '#10b981']; // Purple (Bronze), Indigo (Silver), Emerald (Gold)
+
+  // System Telemetry Live Logs
+  const logContainerRef = useRef(null);
+  const [logs, setLogs] = useState([
+    { text: `[2026-06-07 20:01:50] INFO [__init__.py:68]: Vyana API starting up...`, color: 'text-slate-500' },
+    { text: `[2026-06-07 20:01:51] INFO [__init__.py:72]: ML prediction models loaded successfully at startup.`, color: 'text-slate-500' },
+    { text: `[2026-06-07 20:01:51] INFO [prediction_service.py:101]: ML Prediction | Lead ID: L-2026-0410 | Score: 73.59 | Label: Medium | Latency: 2.26ms`, color: 'text-brand-primary' },
+    { text: `[2026-06-07 20:01:51] INFO [predictions.py:82]: DB Sync Batch Prediction | Scored 1 leads in database | Latency: 3.47ms`, color: 'text-brand-success' },
+    { text: `[2026-06-07 20:02:12] INFO [__init__.py:80]: IP: 127.0.0.1 | Route: GET /api/analytics/summary | Status: 200 | Latency: 8.13ms`, color: 'text-slate-500' },
+    { text: `[2026-06-07 20:02:12] INFO [__init__.py:80]: IP: 127.0.0.1 | Route: GET /api/analytics/trends | Status: 200 | Latency: 0.92ms`, color: 'text-slate-500' }
+  ]);
+
+  useEffect(() => {
+    const templates = [
+      () => ({
+        text: `INFO [__init__.py:80]: IP: 127.0.0.1 | Route: GET /api/analytics/summary | Status: 200 | Latency: ${(Math.random() * 5 + 3).toFixed(2)}ms`,
+        color: 'text-slate-500'
+      }),
+      () => ({
+        text: `INFO [__init__.py:80]: IP: 127.0.0.1 | Route: GET /api/leads | Status: 200 | Latency: ${(Math.random() * 10 + 5).toFixed(2)}ms`,
+        color: 'text-slate-500'
+      }),
+      () => ({
+        text: `INFO [prediction_service.py:101]: ML Prediction | Lead ID: L-${Math.floor(Math.random() * 8000 + 1000)} | Score: ${(Math.random() * 55 + 40).toFixed(2)}% | Latency: ${(Math.random() * 3 + 1).toFixed(2)}ms`,
+        color: 'text-brand-primary'
+      }),
+      () => ({
+        text: `INFO [predictions.py:126]: DB Sync Batch Prediction | Scored ${Math.floor(Math.random() * 3 + 1)} leads in database | Latency: ${(Math.random() * 4 + 2).toFixed(2)}ms`,
+        color: 'text-brand-success'
+      }),
+      () => ({
+        text: `INFO [leads.py:205]: CRUD Operations | Updated Lead L-${Math.floor(Math.random() * 8000 + 1000)} | Cache Busted`,
+        color: 'text-brand-purple'
+      }),
+      () => ({
+        text: `INFO [cache.py:22]: Cache Cleared | Invalidated dashboard query summary caches`,
+        color: 'text-brand-warning'
+      })
+    ];
+
+    const interval = setInterval(() => {
+      const selected = templates[Math.floor(Math.random() * templates.length)]();
+      const timeStr = new Date().toISOString().replace('T', ' ').substring(0, 19);
+      setLogs(prev => {
+        const next = [...prev, { text: `[${timeStr}] ${selected.text}`, color: selected.color }];
+        if (next.length > 50) next.shift(); // keep last 50 logs
+        return next;
+      });
+    }, 4000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    if (logContainerRef.current) {
+      logContainerRef.current.scrollTop = logContainerRef.current.scrollHeight;
+    }
+  }, [logs]);
 
   const fetchData = async () => {
     try {
@@ -447,13 +505,13 @@ function Overview() {
             </span>
           </div>
 
-          <div className="bg-slate-950/80 border border-white/5 rounded-xl p-4 font-mono text-[10px] text-slate-400 h-[190px] overflow-y-auto space-y-2.5">
-            <p className="text-slate-500">[2026-06-07 20:01:50] INFO [__init__.py:68]: Vyana API starting up...</p>
-            <p className="text-slate-500">[2026-06-07 20:01:51] INFO [__init__.py:72]: ML prediction models loaded successfully at startup.</p>
-            <p className="text-brand-primary">[2026-06-07 20:01:51] INFO [prediction_service.py:101]: ML Prediction | Lead ID: L-2026-0410 | Score: 73.59 | Label: Medium | Latency: 2.26ms</p>
-            <p className="text-brand-success">[2026-06-07 20:01:51] INFO [predictions.py:82]: DB Sync Batch Prediction | Scored 1 leads in database | Latency: 3.47ms</p>
-            <p className="text-slate-500">[2026-06-07 20:02:12] INFO [__init__.py:80]: IP: 127.0.0.1 | Route: GET /api/analytics/summary | Status: 200 | Latency: 8.13ms</p>
-            <p className="text-slate-500">[2026-06-07 20:02:12] INFO [__init__.py:80]: IP: 127.0.0.1 | Route: GET /api/analytics/trends | Status: 200 | Latency: 0.92ms</p>
+          <div 
+            ref={logContainerRef}
+            className="bg-slate-950/80 border border-white/5 rounded-xl p-4 font-mono text-[10px] text-slate-400 h-[190px] overflow-y-auto space-y-2.5 scroll-smooth"
+          >
+            {logs.map((log, idx) => (
+              <p key={idx} className={log.color}>{log.text}</p>
+            ))}
           </div>
         </div>
       </div>

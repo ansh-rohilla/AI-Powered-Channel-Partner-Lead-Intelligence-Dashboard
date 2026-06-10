@@ -12,9 +12,11 @@ import {
   BookOpen,
   ArrowRight,
   TrendingUp,
-  AlertTriangle
+  AlertTriangle,
+  RefreshCw,
+  Sparkles
 } from 'lucide-react';
-import { leadService } from '../services/api';
+import { leadService, partnerService } from '../services/api';
 
 function Leads() {
   const [leads, setLeads] = useState([]);
@@ -137,6 +139,157 @@ function Leads() {
     }
   };
 
+  const [draggedOverCol, setDraggedOverCol] = useState(null);
+
+  const [partners, setPartners] = useState([]);
+  const [loadingPartners, setLoadingPartners] = useState(false);
+
+  // Fetch partners list when lead detail opens
+  useEffect(() => {
+    if (selectedLeadId) {
+      const loadPartners = async () => {
+        try {
+          setLoadingPartners(true);
+          const res = await partnerService.getPartners();
+          if (res.success) {
+            setPartners(res.data);
+          }
+        } catch (err) {
+          console.error("Failed to fetch partners for matchmaker", err);
+        } finally {
+          setLoadingPartners(false);
+        }
+      };
+      loadPartners();
+    }
+  }, [selectedLeadId]);
+
+  const getRecommendedPartners = (lead) => {
+    if (!lead || partners.length === 0) return [];
+    
+    const scored = partners.map(partner => {
+      let score = 30; // base score
+      const isRegionMatch = partner.region === lead.region;
+      if (isRegionMatch) score += 40;
+      if (partner.tier === 'Gold') score += 30;
+      else if (partner.tier === 'Silver') score += 15;
+      
+      const workloadPenalty = (partner.active_leads || 0) * 2;
+      score = Math.max(0, score - workloadPenalty);
+      
+      return {
+        ...partner,
+        matchScore: Math.min(99, score),
+        isRegionMatch
+      };
+    });
+    
+    return scored.sort((a, b) => b.matchScore - a.matchScore).slice(0, 3);
+  };
+
+  const handleAssignPartner = async (partnerId, partnerName) => {
+    if (!selectedLeadId) return;
+    try {
+      setUpdating(true);
+      const res = await leadService.updateLead(selectedLeadId, { partner_id: partnerId });
+      if (res.success) {
+        setLeads(prev => prev.map(l => l.lead_id === selectedLeadId ? res.lead : l));
+        setLeadDetail(res.lead);
+        
+        // Success notification
+        const alertDiv = document.createElement('div');
+        alertDiv.className = 'fixed bottom-6 right-6 p-4 rounded-xl border bg-emerald-950/90 border-emerald-500/30 text-emerald-200 backdrop-blur-md shadow-2xl z-50 animate-slide-in';
+        alertDiv.innerHTML = `<p class="text-xs font-bold font-outfit">Lead Reassigned</p><p class="text-[10px] opacity-80 mt-0.5">Assigned to ${partnerName}. ML score recalculated to ${res.lead.ml_score}%</p>`;
+        document.body.appendChild(alertDiv);
+        setTimeout(() => alertDiv.remove(), 4000);
+      }
+    } catch (err) {
+      console.error("Error assigning partner", err);
+    } finally {
+      setUpdating(false);
+    }
+  };
+
+  const getPreviewScore = () => {
+    if (!leadDetail) return 0;
+    
+    const testLead = {
+      ...leadDetail,
+      deal_value_inr: parseFloat(editForm.deal_value_inr) || 0,
+      follow_up_count: parseInt(editForm.follow_up_count) || 0,
+      time_to_first_contact: parseInt(editForm.time_to_first_contact) || 0,
+    };
+    
+    let base = 25.0;
+    if (testLead.lead_source === 'Referral') base += 28.5;
+    else if (testLead.lead_source === 'Cold Call') base -= 12.0;
+    else if (testLead.lead_source === 'Web') base += 5.0;
+    
+    const ttc = testLead.time_to_first_contact;
+    if (ttc !== null && ttc !== undefined) {
+      if (ttc <= 2) base += 20.0;
+      else if (ttc >= 7) base -= 15.0;
+    }
+    
+    const fups = testLead.follow_up_count || 0;
+    if (fups >= 5) base += 15.0;
+    else if (fups <= 1) base -= 8.0;
+
+    const val = testLead.deal_value_inr || 0;
+    if (val >= 1000000) base += 12.0;
+    else if (val <= 100000) base -= 5.0;
+
+    base = Math.max(5.0, Math.min(95.0, base));
+    return parseFloat(base.toFixed(1));
+  };
+
+  const handleDragStart = (e, leadId) => {
+    e.dataTransfer.setData('text/plain', leadId);
+    e.dataTransfer.effectAllowed = 'move';
+  };
+
+  const handleDragOver = (e, colId) => {
+    e.preventDefault();
+    setDraggedOverCol(colId);
+  };
+
+  const handleDragLeave = () => {
+    setDraggedOverCol(null);
+  };
+
+  const handleDrop = async (e, newStatus) => {
+    e.preventDefault();
+    setDraggedOverCol(null);
+    const leadId = e.dataTransfer.getData('text/plain');
+    if (!leadId) return;
+
+    const targetLead = leads.find(l => l.lead_id === leadId);
+    if (!targetLead || targetLead.status === newStatus) return;
+
+    // Optimistically update status in local state
+    const originalLeads = [...leads];
+    setLeads(prev => prev.map(l => l.lead_id === leadId ? { ...l, status: newStatus } : l));
+
+    try {
+      const res = await leadService.updateLead(leadId, { status: newStatus });
+      if (res.success) {
+        setLeads(prev => prev.map(l => l.lead_id === leadId ? res.lead : l));
+        
+        // Custom floating notification
+        const alertDiv = document.createElement('div');
+        alertDiv.className = 'fixed bottom-6 right-6 p-4 rounded-xl border bg-emerald-950/90 border-emerald-500/30 text-emerald-200 backdrop-blur-md shadow-2xl z-50 animate-slide-in';
+        alertDiv.innerHTML = `<p class="text-xs font-bold font-outfit">Pipeline Updated</p><p class="text-[10px] opacity-80 mt-0.5">${targetLead.company_name} moved to ${newStatus}. Score: ${res.lead.ml_score ? Math.round(res.lead.ml_score) : 'N/A'}%</p>`;
+        document.body.appendChild(alertDiv);
+        setTimeout(() => alertDiv.remove(), 4000);
+      } else {
+        setLeads(originalLeads);
+      }
+    } catch (err) {
+      console.error(err);
+      setLeads(originalLeads);
+    }
+  };
+
   // Format currency in Lakhs/Crores
   const formatCurrency = (value) => {
     if (!value && value !== 0) return '₹0.00';
@@ -221,14 +374,25 @@ function Leads() {
                 </div>
 
                 {/* Cards Container */}
-                <div className="space-y-3 flex-1 min-h-[450px] rounded-2xl bg-slate-950/20 p-2 border border-white/5">
+                <div 
+                  onDragOver={(e) => handleDragOver(e, col.id)}
+                  onDragLeave={handleDragLeave}
+                  onDrop={(e) => handleDrop(e, col.id)}
+                  className={`space-y-3 flex-1 min-h-[450px] rounded-2xl p-2 border transition-all duration-200 ${
+                    draggedOverCol === col.id 
+                      ? 'bg-slate-900/40 border-brand-primary/40 shadow-[0_0_12px_rgba(99,102,241,0.1)]' 
+                      : 'bg-slate-950/20 border-white/5'
+                  }`}
+                >
                   {colLeads.map(lead => {
                     const colors = getScoreColor(lead.ml_score);
                     return (
                       <div 
                         key={lead.lead_id}
+                        draggable="true"
+                        onDragStart={(e) => handleDragStart(e, lead.lead_id)}
                         onClick={() => setSelectedLeadId(lead.lead_id)}
-                        className="glass-card p-4 hover:border-white/10 hover:shadow-md cursor-pointer relative group transition-all duration-300"
+                        className="glass-card p-4 hover:border-white/10 hover:shadow-md cursor-pointer relative group transition-all duration-300 active:cursor-grabbing"
                       >
                         <div className="space-y-2">
                           <div className="flex items-start justify-between gap-2">
@@ -446,8 +610,83 @@ function Leads() {
                         <span className="text-slate-500">Product:</span>
                         <span className="font-semibold text-slate-200">{leadDetail.product_interest}</span>
                       </div>
+                      <div className="flex items-center justify-between">
+                        <span className="text-slate-500">Assigned Partner:</span>
+                        <span className="font-semibold text-brand-primary truncate max-w-[120px]" title={partners.find(p => p.partner_id === leadDetail.partner_id)?.company_name || leadDetail.partner_id}>
+                          {partners.find(p => p.partner_id === leadDetail.partner_id)?.company_name || leadDetail.partner_id}
+                        </span>
+                      </div>
                     </div>
                   </div>
+                </div>
+
+                {/* 3.5 AI Partner Matchmaker Recommendations */}
+                <div className="p-4 rounded-xl bg-slate-900/30 border border-white/5 space-y-3">
+                  <div className="flex items-center justify-between">
+                    <h4 className="text-xs font-bold text-slate-300 font-outfit uppercase tracking-wider flex items-center gap-1.5">
+                      <Sparkles size={12} className="text-brand-primary" />
+                      AI Partner Recommendation
+                    </h4>
+                    <span className="text-[8px] font-bold text-slate-500 uppercase">Automated Matchmaker</span>
+                  </div>
+
+                  {loadingPartners ? (
+                    <div className="text-center py-2 text-[10px] text-slate-500">Loading candidate matches...</div>
+                  ) : (
+                    <div className="space-y-2">
+                      {getRecommendedPartners(leadDetail).map(p => {
+                        const isCurrentlyAssigned = p.partner_id === leadDetail.partner_id;
+                        return (
+                          <div 
+                            key={p.partner_id}
+                            className={`p-2.5 rounded-lg border flex items-center justify-between transition-all ${
+                              isCurrentlyAssigned 
+                                ? 'bg-brand-primary/5 border-brand-primary/20' 
+                                : 'bg-slate-950/40 border-white/5 hover:border-white/10'
+                            }`}
+                          >
+                            <div className="space-y-1">
+                              <div className="flex items-center gap-2">
+                                <span className="text-xs font-bold text-slate-200">{p.company_name}</span>
+                                <span className={`text-[8px] px-1.5 py-0.2 rounded font-extrabold ${
+                                  p.tier === 'Gold' ? 'bg-amber-950/40 text-brand-warning' : p.tier === 'Silver' ? 'bg-indigo-950/40 text-brand-primary' : 'bg-slate-900 text-slate-400'
+                                }`}>
+                                  {p.tier}
+                                </span>
+                              </div>
+                              <div className="flex items-center gap-3 text-[9px] text-slate-500">
+                                <span>Region: {p.region}</span>
+                                <span>•</span>
+                                <span>Active Leads: {p.active_leads || 0}</span>
+                                <span>•</span>
+                                <span className="text-emerald-500">{p.isRegionMatch ? 'Direct regional fit' : 'Regional delegation'}</span>
+                              </div>
+                            </div>
+                            
+                            <div className="flex items-center gap-3">
+                              <span className={`text-xs font-black font-outfit ${
+                                p.matchScore >= 80 ? 'text-brand-success' : p.matchScore >= 50 ? 'text-brand-warning' : 'text-slate-400'
+                              }`}>
+                                {p.matchScore}% Match
+                              </span>
+                              
+                              {isCurrentlyAssigned ? (
+                                <span className="text-[9px] font-bold text-brand-primary uppercase px-2 py-1 bg-brand-primary/10 rounded">Assigned</span>
+                              ) : (
+                                <button
+                                  type="button"
+                                  onClick={() => handleAssignPartner(p.partner_id, p.company_name)}
+                                  className="px-2 py-1 bg-slate-900 hover:bg-brand-primary hover:text-white rounded text-[9px] font-bold text-slate-400 transition-all"
+                                >
+                                  Assign
+                                </button>
+                              )}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
                 </div>
 
                 {/* 4. Edit Lead / Parameter Tweak Form (Real-time recalculation) */}
@@ -513,6 +752,22 @@ function Leads() {
                       onChange={(e) => setEditForm({ ...editForm, notes: e.target.value })}
                       className="glass-input text-xs h-16 resize-none"
                     />
+                  </div>
+
+                  {/* Live ML Score preview */}
+                  <div className="p-3 rounded-xl bg-slate-950/80 border border-white/5 flex items-center justify-between">
+                    <div>
+                      <span className="text-[9px] font-bold text-slate-500 uppercase tracking-wide">Live Model Score Preview</span>
+                      <p className="text-[10px] text-slate-400 mt-0.5">Estimated probability prior to database synchronization</p>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs text-slate-500 line-through">
+                        {leadDetail.ml_score ? `${Math.round(leadDetail.ml_score)}%` : 'Pending'}
+                      </span>
+                      <span className="text-xs font-bold text-brand-primary animate-pulse">
+                        → {getPreviewScore()}%
+                      </span>
+                    </div>
                   </div>
 
                   <button

@@ -1,5 +1,6 @@
 from flask import Blueprint, request, jsonify
 from app.database import db
+from app import cache
 from app.models.lead import Lead
 from app.models.partner import Partner
 from app.schemas.lead_schema import LeadSchema
@@ -147,6 +148,10 @@ def create_lead():
     try:
         db.session.add(lead)
         db.session.commit()
+        try:
+            cache.clear()
+        except Exception:
+            pass
         return jsonify({"success": True, "message": "Lead created successfully", "lead": schema.dump(lead)}), 201
     except Exception as e:
         db.session.rollback()
@@ -200,6 +205,10 @@ def update_lead(lead_id):
 
     try:
         db.session.commit()
+        try:
+            cache.clear()
+        except Exception:
+            pass
         return jsonify({
             "success": True,
             "message": "Lead updated successfully",
@@ -218,6 +227,10 @@ def delete_lead(lead_id):
     try:
         db.session.delete(lead)
         db.session.commit()
+        try:
+            cache.clear()
+        except Exception:
+            pass
         return jsonify({"success": True, "message": f"Lead '{lead_id}' deleted successfully"}), 200
     except Exception as e:
         db.session.rollback()

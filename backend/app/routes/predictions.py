@@ -2,6 +2,7 @@ import time
 from flask import Blueprint, request, jsonify, current_app
 from marshmallow import ValidationError
 from app.database import db
+from app import cache
 from app.models.lead import Lead
 from app.models.partner import Partner
 from app.schemas.lead_schema import LeadSchema
@@ -125,6 +126,10 @@ def predict_batch():
             
         if scored_count > 0:
             db.session.commit()
+            try:
+                cache.clear()
+            except Exception:
+                pass
             
         latency = (time.time() - start_time) * 1000
         current_app.logger.info(
