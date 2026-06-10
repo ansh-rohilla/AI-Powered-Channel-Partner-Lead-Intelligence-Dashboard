@@ -2,17 +2,7 @@ import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Layout from './components/Layout.jsx';
 import Overview from './pages/Overview.jsx';
-
-// Skeletons for other pages to ensure fully functional routing
-const Partners = () => (
-  <div className="p-6">
-    <h1 className="text-2xl font-bold font-outfit mb-2">Channel Partners</h1>
-    <p className="text-slate-400">View and manage distribution partners, tiers, and annual revenues.</p>
-    <div className="mt-6 glass-card p-12 text-center text-slate-500 border-dashed border-white/5 bg-slate-900/10">
-      Channel Partners directory features coming in next sprint.
-    </div>
-  </div>
-);
+import Partners from './pages/Partners.jsx';
 
 const Leads = () => (
   <div className="p-6">
