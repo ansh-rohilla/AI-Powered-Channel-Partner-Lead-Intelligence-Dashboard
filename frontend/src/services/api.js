@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // Create Axios client with base URL pointing to the Vite proxy endpoint
 const apiClient = axios.create({
-  baseURL: '/api',
+  baseURL: import.meta.env.VITE_API_BASE_URL || '/api',
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',
