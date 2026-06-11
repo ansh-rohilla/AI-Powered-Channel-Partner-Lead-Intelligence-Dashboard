@@ -185,10 +185,10 @@ function Overview() {
       {/* Welcome header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-extrabold font-outfit tracking-tight bg-gradient-to-r from-white via-slate-100 to-slate-400 bg-clip-text text-transparent">
+          <h1 className="text-3xl font-extrabold font-outfit tracking-tight bg-gradient-to-r from-slate-900 via-slate-800 to-slate-650 dark:from-white dark:via-slate-100 dark:to-slate-400 bg-clip-text text-transparent">
             Vyana Lead Intelligence
           </h1>
-          <p className="text-sm text-slate-400 mt-1">
+          <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
             Real-time pipeline analytics, channel partner metrics, and machine learning prediction scores.
           </p>
         </div>
@@ -198,7 +198,7 @@ function Overview() {
           <button 
             onClick={handleBatchScoring}
             disabled={scoring}
-            className="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-white/10 bg-slate-900/40 hover:bg-slate-900/80 hover:border-brand-primary/40 text-xs font-semibold tracking-wider transition-all duration-300 disabled:opacity-50 shadow-lg"
+            className="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-slate-200/80 dark:border-white/10 bg-white/40 dark:bg-slate-900/40 hover:bg-white/80 dark:hover:bg-slate-900/80 hover:border-brand-primary/40 text-xs font-semibold text-slate-800 dark:text-white tracking-wider transition-all duration-300 disabled:opacity-50 shadow-lg"
           >
             <Zap className={`w-3.5 h-3.5 text-brand-primary ${scoring ? 'animate-bounce' : ''}`} />
             {scoring ? 'ANALYZING PIPELINE...' : 'RUN AI LEAD SCORING'}
@@ -230,13 +230,13 @@ function Overview() {
         {/* Card 1: Total Active Partners */}
         <div className="glass-card p-6 flex flex-col justify-between hover:shadow-brand-purple/5 hover:-translate-y-0.5 duration-300">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold text-slate-400 tracking-wider font-outfit uppercase">Active Partners</span>
+            <span className="text-xs font-bold text-slate-500 dark:text-slate-400 tracking-wider font-outfit uppercase">Active Partners</span>
             <div className="p-2 rounded-xl bg-brand-purple/10 text-brand-purple border border-brand-purple/10">
               <Users size={16} />
             </div>
           </div>
           <div className="mt-4">
-            <h3 className="text-3xl font-bold tracking-tight font-outfit text-white">
+            <h3 className="text-3xl font-bold tracking-tight font-outfit text-slate-900 dark:text-white">
               {summary?.active_partners || 0}
             </h3>
             <div className="flex items-center gap-1 mt-1 text-[10px] text-brand-success font-medium">
@@ -249,13 +249,13 @@ function Overview() {
         {/* Card 2: Active Pipeline Leads */}
         <div className="glass-card p-6 flex flex-col justify-between hover:shadow-brand-primary/5 hover:-translate-y-0.5 duration-300">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold text-slate-400 tracking-wider font-outfit uppercase">Active Leads</span>
+            <span className="text-xs font-bold text-slate-500 dark:text-slate-400 tracking-wider font-outfit uppercase">Active Leads</span>
             <div className="p-2 rounded-xl bg-brand-primary/10 text-brand-primary border border-brand-primary/10">
               <Target size={16} />
             </div>
           </div>
           <div className="mt-4">
-            <h3 className="text-3xl font-bold tracking-tight font-outfit text-white">
+            <h3 className="text-3xl font-bold tracking-tight font-outfit text-slate-900 dark:text-white">
               {summary?.active_leads || 0}
             </h3>
             <div className="flex items-center gap-1 mt-1 text-[10px] text-brand-success font-medium">
@@ -268,13 +268,13 @@ function Overview() {
         {/* Card 3: Model Conversion Rate */}
         <div className="glass-card p-6 flex flex-col justify-between hover:shadow-brand-success/5 hover:-translate-y-0.5 duration-300">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold text-slate-400 tracking-wider font-outfit uppercase">Conversion Rate</span>
+            <span className="text-xs font-bold text-slate-500 dark:text-slate-400 tracking-wider font-outfit uppercase">Conversion Rate</span>
             <div className="p-2 rounded-xl bg-brand-success/10 text-brand-success border border-brand-success/10">
               <Percent size={16} />
             </div>
           </div>
           <div className="mt-4">
-            <h3 className="text-3xl font-bold tracking-tight font-outfit text-white">
+            <h3 className="text-3xl font-bold tracking-tight font-outfit text-slate-900 dark:text-white">
               {summary?.conversion_rate ? `${summary.conversion_rate}%` : '0.00%'}
             </h3>
             <div className="flex items-center gap-1 mt-1 text-[10px] text-brand-success font-medium">
@@ -287,13 +287,13 @@ function Overview() {
         {/* Card 4: Total Projected Revenue */}
         <div className="glass-card p-6 flex flex-col justify-between hover:shadow-brand-primary/5 hover:-translate-y-0.5 duration-300">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-bold text-slate-400 tracking-wider font-outfit uppercase">Pipeline Value</span>
+            <span className="text-xs font-bold text-slate-500 dark:text-slate-400 tracking-wider font-outfit uppercase">Pipeline Value</span>
             <div className="p-2 rounded-xl bg-brand-primary/10 text-brand-primary border border-brand-primary/10">
               <Zap size={16} />
             </div>
           </div>
           <div className="mt-4">
-            <h3 className="text-3xl font-bold tracking-tight font-outfit text-white">
+            <h3 className="text-3xl font-bold tracking-tight font-outfit text-slate-900 dark:text-white">
               {formatCurrency(summary?.pipeline_value_inr)}
             </h3>
             <div className="flex items-center gap-1 mt-1 text-[10px] text-brand-success font-medium">
@@ -310,15 +310,15 @@ function Overview() {
         <div className="glass-card p-6 lg:col-span-2 space-y-4">
           <div className="flex items-center justify-between">
             <div>
-              <h2 className="text-base font-bold font-outfit text-slate-200">Lead Volume & Conversion trends</h2>
+              <h2 className="text-base font-bold font-outfit text-slate-800 dark:text-slate-200">Lead Volume & Conversion trends</h2>
               <p className="text-xs text-slate-500">Weekly intake volume mapped against aggregate conversion rates</p>
             </div>
             <div className="flex items-center gap-4 text-xs font-medium">
-              <div className="flex items-center gap-1.5 text-slate-400">
+              <div className="flex items-center gap-1.5 text-slate-550 dark:text-slate-400">
                 <span className="w-2.5 h-2.5 rounded bg-brand-primary/20 border border-brand-primary" />
                 <span>Volume</span>
               </div>
-              <div className="flex items-center gap-1.5 text-slate-400">
+              <div className="flex items-center gap-1.5 text-slate-550 dark:text-slate-400">
                 <span className="w-2.5 h-0.5 bg-brand-success" />
                 <span>Conversion %</span>
               </div>
@@ -334,16 +334,16 @@ function Overview() {
                     <stop offset="95%" stopColor="#6366f1" stopOpacity={0}/>
                   </linearGradient>
                 </defs>
-                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.03)" vertical={false} />
+                <CartesianGrid strokeDasharray="3 3" stroke="rgba(148,163,184,0.12)" vertical={false} />
                 <XAxis 
                   dataKey="week_start" 
-                  stroke="rgba(255,255,255,0.2)" 
+                  stroke="#94a3b8" 
                   fontSize={10} 
                   tickLine={false} 
                 />
                 <YAxis 
                   yAxisId="left" 
-                  stroke="rgba(255,255,255,0.2)" 
+                  stroke="#94a3b8" 
                   fontSize={10} 
                   tickLine={false}
                   axisLine={false}
@@ -351,7 +351,7 @@ function Overview() {
                 <YAxis 
                   yAxisId="right" 
                   orientation="right" 
-                  stroke="rgba(255,255,255,0.2)" 
+                  stroke="#94a3b8" 
                   fontSize={10} 
                   tickLine={false}
                   axisLine={false}
@@ -384,7 +384,7 @@ function Overview() {
         {/* Donut Chart (Right) */}
         <div className="glass-card p-6 flex flex-col justify-between">
           <div>
-            <h2 className="text-base font-bold font-outfit text-slate-200">Partner Tier Distribution</h2>
+            <h2 className="text-base font-bold font-outfit text-slate-800 dark:text-slate-200">Partner Tier Distribution</h2>
             <p className="text-xs text-slate-500">Distribution of active partners by tier levels</p>
           </div>
 
@@ -415,20 +415,20 @@ function Overview() {
             
             {/* Center label */}
             <div className="absolute flex flex-col items-center justify-center">
-              <span className="text-2xl font-bold font-outfit text-white">{summary?.active_partners || 0}</span>
+              <span className="text-2xl font-bold font-outfit text-slate-900 dark:text-white">{summary?.active_partners || 0}</span>
               <span className="text-[10px] text-slate-500 font-semibold tracking-wider uppercase">Partners</span>
             </div>
           </div>
 
           {/* Legend Table */}
-          <div className="grid grid-cols-3 gap-2 border-t border-white/5 pt-4 text-center">
+          <div className="grid grid-cols-3 gap-2 border-t border-slate-200/60 dark:border-white/5 pt-4 text-center">
             {donutData.map((item, index) => (
               <div key={item.name} className="flex flex-col items-center">
                 <div className="flex items-center gap-1">
                   <span className="w-2 h-2 rounded-full" style={{ backgroundColor: COLORS[index] }} />
-                  <span className="text-[11px] font-bold text-slate-300">{item.name}</span>
+                  <span className="text-[11px] font-bold text-slate-700 dark:text-slate-300">{item.name}</span>
                 </div>
-                <span className="text-xs font-semibold text-slate-400 mt-0.5">{item.value} ({item.deals} deals)</span>
+                <span className="text-xs font-semibold text-slate-500 dark:text-slate-400 mt-0.5">{item.value} ({item.deals} deals)</span>
               </div>
             ))}
           </div>
@@ -444,46 +444,46 @@ function Overview() {
               <Zap size={16} />
             </div>
             <div>
-              <h2 className="text-base font-bold font-outfit text-slate-200">Explainable AI Drivers</h2>
+              <h2 className="text-base font-bold font-outfit text-slate-800 dark:text-slate-200">Explainable AI Drivers</h2>
               <p className="text-xs text-slate-500">Key lead features driving the XGBoost classifier's predictions</p>
             </div>
           </div>
 
           <div className="space-y-3 pt-2">
             {/* Driver 1 */}
-            <div className="flex items-center justify-between p-3 rounded-xl bg-slate-900/40 border border-white/5">
+            <div className="flex items-center justify-between p-3 rounded-xl bg-slate-50/55 dark:bg-slate-900/40 border border-slate-200/50 dark:border-white/5">
               <div className="flex items-center gap-3">
                 <span className="text-xs px-2 py-0.5 rounded bg-emerald-950 text-emerald-400 border border-emerald-500/20 font-bold font-outfit">+ 42.5%</span>
-                <span className="text-xs font-medium text-slate-300">Warm Referral origin channel source</span>
+                <span className="text-xs font-medium text-slate-700 dark:text-slate-300">Warm Referral origin channel source</span>
               </div>
-              <span className="text-[10px] text-slate-500 uppercase font-semibold">Source</span>
+              <span className="text-[10px] text-slate-550 dark:text-slate-500 uppercase font-semibold">Source</span>
             </div>
 
             {/* Driver 2 */}
-            <div className="flex items-center justify-between p-3 rounded-xl bg-slate-900/40 border border-white/5">
+            <div className="flex items-center justify-between p-3 rounded-xl bg-slate-50/55 dark:bg-slate-900/40 border border-slate-200/50 dark:border-white/5">
               <div className="flex items-center gap-3">
                 <span className="text-xs px-2 py-0.5 rounded bg-emerald-950 text-emerald-400 border border-emerald-500/20 font-bold font-outfit">+ 28.1%</span>
-                <span className="text-xs font-medium text-slate-300">Prompt contact outreach latency (≤ 2 days)</span>
+                <span className="text-xs font-medium text-slate-700 dark:text-slate-300">Prompt contact outreach latency (≤ 2 days)</span>
               </div>
-              <span className="text-[10px] text-slate-500 uppercase font-semibold">Latency</span>
+              <span className="text-[10px] text-slate-550 dark:text-slate-500 uppercase font-semibold">Latency</span>
             </div>
 
             {/* Driver 3 */}
-            <div className="flex items-center justify-between p-3 rounded-xl bg-slate-900/40 border border-white/5">
+            <div className="flex items-center justify-between p-3 rounded-xl bg-slate-50/55 dark:bg-slate-900/40 border border-slate-200/50 dark:border-white/5">
               <div className="flex items-center gap-3">
                 <span className="text-xs px-2 py-0.5 rounded bg-emerald-950 text-emerald-400 border border-emerald-500/20 font-bold font-outfit">+ 18.4%</span>
-                <span className="text-xs font-medium text-slate-300">Assignment to Gold-tier channel partner</span>
+                <span className="text-xs font-medium text-slate-700 dark:text-slate-300">Assignment to Gold-tier channel partner</span>
               </div>
-              <span className="text-[10px] text-slate-500 uppercase font-semibold">Partner</span>
+              <span className="text-[10px] text-slate-550 dark:text-slate-500 uppercase font-semibold">Partner</span>
             </div>
 
             {/* Driver 4 */}
-            <div className="flex items-center justify-between p-3 rounded-xl bg-slate-900/40 border border-white/5">
+            <div className="flex items-center justify-between p-3 rounded-xl bg-slate-50/55 dark:bg-slate-900/40 border border-slate-200/50 dark:border-white/5">
               <div className="flex items-center gap-3">
                 <span className="text-xs px-2 py-0.5 rounded bg-rose-950 text-rose-400 border border-rose-500/20 font-bold font-outfit">- 15.3%</span>
-                <span className="text-xs font-medium text-slate-300">Engagement with Bronze-tier channel partner</span>
+                <span className="text-xs font-medium text-slate-700 dark:text-slate-300">Engagement with Bronze-tier channel partner</span>
               </div>
-              <span className="text-[10px] text-slate-500 uppercase font-semibold">Partner</span>
+              <span className="text-[10px] text-slate-550 dark:text-slate-500 uppercase font-semibold">Partner</span>
             </div>
           </div>
         </div>
@@ -496,18 +496,18 @@ function Overview() {
                 <Target size={16} />
               </div>
               <div>
-                <h2 className="text-base font-bold font-outfit text-slate-200">System Telemetry Logs</h2>
+                <h2 className="text-base font-bold font-outfit text-slate-800 dark:text-slate-200">System Telemetry Logs</h2>
                 <p className="text-xs text-slate-500">Live feed of model evaluations and route latencies</p>
               </div>
             </div>
-            <span className="text-[9px] px-2 py-0.5 rounded-full bg-slate-900 text-slate-400 border border-white/5">
+            <span className="text-[9px] px-2 py-0.5 rounded-full bg-slate-100 dark:bg-slate-900 text-slate-600 dark:text-slate-400 border border-slate-200 dark:border-white/5">
               LIVE UPDATES
             </span>
           </div>
 
           <div 
             ref={logContainerRef}
-            className="bg-slate-950/80 border border-white/5 rounded-xl p-4 font-mono text-[10px] text-slate-400 h-[190px] overflow-y-auto space-y-2.5 scroll-smooth"
+            className="bg-slate-50 dark:bg-slate-950/80 border border-slate-200 dark:border-white/5 rounded-xl p-4 font-mono text-[10px] text-slate-650 dark:text-slate-400 h-[190px] overflow-y-auto space-y-2.5 scroll-smooth"
           >
             {logs.map((log, idx) => (
               <p key={idx} className={log.color}>{log.text}</p>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Outlet, NavLink, useLocation } from 'react-router-dom';
 import logo from '../assets/logo.png';
 import { 
@@ -10,13 +10,33 @@ import {
   Bell, 
   Menu,
   ChevronLeft,
-  ChevronRight
+  ChevronRight,
+  Sun,
+  Moon
 } from 'lucide-react';
 
 function Layout() {
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
+
+  // Initialize theme from localStorage or system setting (default dark)
+  const [theme, setTheme] = useState(() => {
+    return localStorage.getItem('theme') || 'dark';
+  });
+
+  useEffect(() => {
+    if (theme === 'dark') {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+    localStorage.setItem('theme', theme);
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme(prev => prev === 'dark' ? 'light' : 'dark');
+  };
 
   const navItems = [
     { name: 'Dashboard', path: '/', icon: LayoutDashboard },
@@ -35,30 +55,30 @@ function Layout() {
   };
 
   return (
-    <div className="flex min-h-screen bg-[#070b13] text-slate-100 font-sans overflow-x-hidden">
+    <div className="flex min-h-screen bg-slate-50 dark:bg-[#070b13] text-slate-800 dark:text-slate-100 font-sans overflow-x-hidden transition-colors duration-200">
       {/* Background radial glow */}
       <div className="absolute top-0 right-1/4 w-[500px] h-[500px] bg-brand-primary/5 rounded-full blur-[100px] pointer-events-none" />
       <div className="absolute bottom-1/4 left-1/4 w-[400px] h-[400px] bg-brand-purple/5 rounded-full blur-[100px] pointer-events-none" />
 
       {/* Sidebar - Desktop */}
       <aside 
-        className={`hidden md:flex flex-col border-r border-white/5 bg-[#090d16]/80 backdrop-blur-xl transition-all duration-300 ${
+        className={`hidden md:flex flex-col border-r border-slate-200/60 dark:border-white/5 bg-white dark:bg-[#090d16]/80 backdrop-blur-xl transition-all duration-300 ${
           collapsed ? 'w-20' : 'w-64'
         } relative z-30`}
       >
         {/* Toggle Collapse Button */}
         <button
           onClick={() => setCollapsed(!collapsed)}
-          className="absolute -right-3 top-6 w-6 h-6 rounded-full border border-white/5 bg-[#0e1422] flex items-center justify-center text-slate-400 hover:text-white transition-all shadow-md z-40"
+          className="absolute -right-3 top-6 w-6 h-6 rounded-full border border-slate-200 dark:border-white/5 bg-white dark:bg-[#0e1422] flex items-center justify-center text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white transition-all shadow-md z-40"
         >
           {collapsed ? <ChevronRight size={12} /> : <ChevronLeft size={12} />}
         </button>
 
         {/* Brand Header */}
-        <div className="h-20 flex items-center px-6 border-b border-white/5 gap-3">
+        <div className="h-20 flex items-center px-6 border-b border-slate-200/60 dark:border-b-white/5 gap-3">
           <img src={logo} alt="Vyana Logo" className="w-8 h-8 object-contain rounded-lg shadow-lg" />
           {!collapsed && (
-            <span className="font-outfit font-bold text-lg tracking-wider bg-gradient-to-r from-white to-slate-300 bg-clip-text text-transparent">
+            <span className="font-outfit font-bold text-lg tracking-wider bg-gradient-to-r from-slate-900 via-slate-800 to-slate-600 dark:from-white dark:to-slate-300 bg-clip-text text-transparent">
               Vyana AI
             </span>
           )}
@@ -75,8 +95,8 @@ function Layout() {
                 className={({ isActive }) =>
                   `flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group relative ${
                     isActive 
-                      ? 'bg-slate-900 text-white font-medium shadow-inner shadow-white/5 border border-white/5' 
-                      : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900/40'
+                      ? 'bg-slate-100 dark:bg-slate-900 text-slate-900 dark:text-white font-medium shadow-inner border border-slate-200/50 dark:border-white/5' 
+                      : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-100/50 dark:hover:bg-slate-900/40'
                   }`
                 }
               >
@@ -86,12 +106,12 @@ function Layout() {
                     {isActive && (
                       <div className="absolute left-0 top-1/4 bottom-1/4 w-1 bg-brand-primary rounded-r-md shadow-[0_0_8px_#6366f1]" />
                     )}
-                    <Icon size={18} className={`transition-all duration-200 group-hover:scale-105 ${isActive ? 'text-brand-primary' : 'text-slate-400 group-hover:text-slate-300'}`} />
+                    <Icon size={18} className={`transition-all duration-200 group-hover:scale-105 ${isActive ? 'text-brand-primary' : 'text-slate-500 dark:text-slate-400 group-hover:text-slate-850 dark:group-hover:text-slate-300'}`} />
                     {!collapsed && <span className="font-outfit text-sm tracking-wide">{item.name}</span>}
                     
                     {/* Tooltip on collapsed state */}
                     {collapsed && (
-                      <div className="absolute left-full ml-4 px-2 py-1 bg-slate-950 text-slate-100 text-xs rounded-md opacity-0 group-hover:opacity-100 pointer-events-none transition-all duration-150 shadow-md border border-white/5 whitespace-nowrap z-50">
+                      <div className="absolute left-full ml-4 px-2 py-1 bg-slate-100 dark:bg-slate-950 text-slate-800 dark:text-slate-100 text-xs rounded-md opacity-0 group-hover:opacity-100 pointer-events-none transition-all duration-150 shadow-md border border-slate-200 dark:border-white/5 whitespace-nowrap z-50">
                         {item.name}
                       </div>
                     )}
@@ -103,7 +123,7 @@ function Layout() {
         </nav>
 
         {/* User profile section */}
-        <div className="p-4 border-t border-white/5 flex items-center gap-3">
+        <div className="p-4 border-t border-slate-200/60 dark:border-white/5 flex items-center gap-3">
           <img
             src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=80&fit=crop&q=80"
             alt="Profile Avatar"
@@ -111,7 +131,7 @@ function Layout() {
           />
           {!collapsed && (
             <div className="flex-1 min-w-0">
-              <p className="text-xs font-semibold text-slate-200 truncate">Alex Chen</p>
+              <p className="text-xs font-semibold text-slate-800 dark:text-slate-200 truncate">Alex Chen</p>
               <p className="text-[10px] text-slate-500 truncate">Sales Operations Director</p>
             </div>
           )}
@@ -126,13 +146,13 @@ function Layout() {
         />
       )}
       <aside 
-        className={`fixed top-0 bottom-0 left-0 w-64 bg-[#090d16] border-r border-white/5 z-50 md:hidden transition-transform duration-300 transform ${
+        className={`fixed top-0 bottom-0 left-0 w-64 bg-white dark:bg-[#090d16] border-r border-slate-200/60 dark:border-white/5 z-50 md:hidden transition-transform duration-300 transform ${
           mobileOpen ? 'translate-x-0' : '-translate-x-full'
         } flex flex-col`}
       >
-        <div className="h-20 flex items-center px-6 border-b border-white/5 gap-3">
+        <div className="h-20 flex items-center px-6 border-b border-slate-200/60 dark:border-white/5 gap-3">
           <img src={logo} alt="Vyana Logo" className="w-8 h-8 object-contain rounded-lg shadow-lg" />
-          <span className="font-outfit font-bold text-lg text-white">Vyana AI</span>
+          <span className="font-outfit font-bold text-lg text-slate-900 dark:text-white">Vyana AI</span>
         </div>
 
         <nav className="flex-1 py-6 px-4 space-y-1.5">
@@ -146,8 +166,8 @@ function Layout() {
                 className={({ isActive }) =>
                   `flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 ${
                     isActive 
-                      ? 'bg-slate-900 text-white font-medium border border-white/5' 
-                      : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900/40'
+                      ? 'bg-slate-100 dark:bg-slate-900 text-slate-900 dark:text-white font-medium border border-slate-200/50 dark:border-white/5' 
+                      : 'text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-100/50 dark:hover:bg-slate-900/40'
                   }`
                 }
               >
@@ -158,14 +178,14 @@ function Layout() {
           })}
         </nav>
 
-        <div className="p-4 border-t border-white/5 flex items-center gap-3">
+        <div className="p-4 border-t border-slate-200/60 dark:border-white/5 flex items-center gap-3">
           <img
             src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=80&fit=crop&q=80"
             alt="Profile Avatar"
             className="w-9 h-9 rounded-xl object-cover border border-brand-primary/20"
           />
           <div className="flex-1 min-w-0">
-            <p className="text-xs font-semibold text-slate-200 truncate">Alex Chen</p>
+            <p className="text-xs font-semibold text-slate-800 dark:text-slate-200 truncate">Alex Chen</p>
             <p className="text-[10px] text-slate-500 truncate">Sales Operations Director</p>
           </div>
         </div>
@@ -174,11 +194,11 @@ function Layout() {
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col min-h-screen relative z-10">
         {/* Top Navbar */}
-        <header className="h-20 flex items-center justify-between px-6 md:px-8 border-b border-white/5 bg-[#070b13]/40 backdrop-blur-md sticky top-0 z-20">
+        <header className="h-20 flex items-center justify-between px-6 md:px-8 border-b border-slate-200/60 dark:border-b-white/5 bg-slate-50/40 dark:bg-[#070b13]/40 backdrop-blur-md sticky top-0 z-20">
           <div className="flex items-center gap-4">
             <button 
               onClick={() => setMobileOpen(true)}
-              className="p-2 -ml-2 rounded-lg text-slate-400 hover:text-white md:hidden hover:bg-slate-900/40"
+              className="p-2 -ml-2 rounded-lg text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white md:hidden hover:bg-slate-100/40 dark:hover:bg-slate-900/40"
             >
               <Menu size={20} />
             </button>
@@ -187,19 +207,28 @@ function Layout() {
             <div className="flex items-center gap-2 text-xs font-medium text-slate-400">
               <span>Vyana Portal</span>
               <span>/</span>
-              <span className="text-slate-200 font-semibold">{getBreadcrumb()}</span>
+              <span className="text-slate-800 dark:text-slate-200 font-semibold">{getBreadcrumb()}</span>
             </div>
           </div>
 
           <div className="flex items-center gap-4">
+            {/* Theme Toggle */}
+            <button 
+              onClick={toggleTheme}
+              className="p-2 rounded-xl border border-slate-200 dark:border-white/5 bg-slate-100 dark:bg-slate-900/20 text-slate-500 dark:text-slate-400 hover:text-slate-850 dark:hover:text-slate-200 transition-all hover:bg-slate-200 dark:hover:bg-slate-900/60"
+              aria-label="Toggle Theme"
+            >
+              {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
+            </button>
+
             {/* Notifications */}
-            <button className="p-2 rounded-xl border border-white/5 bg-slate-900/20 text-slate-400 hover:text-slate-200 transition-all relative hover:bg-slate-900/60">
+            <button className="p-2 rounded-xl border border-slate-200 dark:border-white/5 bg-slate-100 dark:bg-slate-900/20 text-slate-500 dark:text-slate-400 hover:text-slate-850 dark:hover:text-slate-200 transition-all relative hover:bg-slate-200 dark:hover:bg-slate-900/60">
               <Bell size={18} />
               <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-brand-primary shadow-[0_0_6px_#6366f1]" />
             </button>
 
             {/* Quick Stats overview pill */}
-            <div className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-white/5 bg-slate-900/10 text-[10px] font-semibold text-slate-400">
+            <div className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-slate-200 dark:border-white/5 bg-slate-100 dark:bg-slate-900/10 text-[10px] font-semibold text-slate-650 dark:text-slate-400">
               <span className="w-1.5 h-1.5 rounded-full bg-brand-success shadow-[0_0_4px_#10b981]" />
               ML ENGINE ACTIVE
             </div>

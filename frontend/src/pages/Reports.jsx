@@ -228,10 +228,10 @@ function Reports() {
       {/* Header (No print) */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 no-print">
         <div>
-          <h1 className="text-3xl font-extrabold font-outfit tracking-tight bg-gradient-to-r from-white via-slate-100 to-slate-400 bg-clip-text text-transparent">
+          <h1 className="text-3xl font-extrabold font-outfit tracking-tight bg-gradient-to-r from-slate-900 via-slate-800 to-slate-650 dark:from-white dark:via-slate-100 dark:to-slate-400 bg-clip-text text-transparent">
             Executive Report Exports
           </h1>
-          <p className="text-sm text-slate-400 mt-1">
+          <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
             Generate custom data exports, download audit CSV files, and print structured executive pipelines.
           </p>
         </div>
@@ -240,7 +240,7 @@ function Reports() {
         <div className="flex items-center gap-3">
           <button
             onClick={handlePrint}
-            className="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-white/10 bg-slate-900/40 hover:bg-slate-900/80 text-xs font-semibold font-outfit transition-all duration-300"
+            className="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-slate-200 dark:border-white/10 bg-white/40 dark:bg-slate-900/40 hover:bg-slate-100 dark:hover:bg-slate-900/80 text-xs font-semibold font-outfit text-slate-800 dark:text-slate-200 transition-all duration-300"
           >
             <Printer size={14} className="text-brand-purple" />
             <span>PRINT REPORT / PDF</span>
@@ -248,7 +248,7 @@ function Reports() {
           
           <button
             onClick={handleExportCSV}
-            className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-brand-primary hover:bg-brand-primary/80 text-xs font-semibold font-outfit transition-all duration-300 shadow-lg shadow-brand-primary/20"
+            className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-brand-primary hover:bg-brand-primary/80 text-xs font-semibold font-outfit text-white transition-all duration-300 shadow-lg shadow-brand-primary/20"
           >
             <Download size={14} />
             <span>EXPORT CSV DATA</span>
@@ -256,16 +256,14 @@ function Reports() {
         </div>
       </div>
 
-      {/* Section 1: Filters Bar (No print) */}
       <div className="glass-card p-6 grid grid-cols-1 md:grid-cols-4 gap-6 no-print">
-        {/* DataType selection */}
         <div className="flex flex-col gap-2">
           <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Report Scope</label>
-          <div className="flex rounded-xl bg-slate-950 p-1 border border-white/5">
+          <div className="flex rounded-xl bg-slate-200 dark:bg-slate-950 p-1 border border-slate-300 dark:border-white/5">
             <button
               onClick={() => setDataType('leads')}
               className={`flex-1 py-1.5 rounded-lg text-xs font-semibold font-outfit transition-all ${
-                dataType === 'leads' ? 'bg-slate-900 text-white border border-white/5 shadow-inner' : 'text-slate-400 hover:text-slate-200'
+                dataType === 'leads' ? 'bg-white dark:bg-slate-900 text-slate-900 dark:text-white border border-slate-200 dark:border-white/5 shadow-inner' : 'text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200'
               }`}
             >
               Leads Pipeline
@@ -273,7 +271,7 @@ function Reports() {
             <button
               onClick={() => setDataType('partners')}
               className={`flex-1 py-1.5 rounded-lg text-xs font-semibold font-outfit transition-all ${
-                dataType === 'partners' ? 'bg-slate-900 text-white border border-white/5 shadow-inner' : 'text-slate-400 hover:text-slate-200'
+                dataType === 'partners' ? 'bg-white dark:bg-slate-900 text-slate-900 dark:text-white border border-slate-200 dark:border-white/5 shadow-inner' : 'text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200'
               }`}
             >
               Partners List
@@ -332,7 +330,7 @@ function Reports() {
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Sliders size={14} className="text-brand-primary" />
-            <h2 className="text-xs font-bold text-slate-300 uppercase tracking-wider">Custom Fields Selection Checklist</h2>
+            <h2 className="text-xs font-bold text-slate-800 dark:text-slate-300 uppercase tracking-wider">Custom Fields Selection Checklist</h2>
           </div>
           <div className="flex items-center gap-2 text-[10px] font-bold">
             <button
@@ -344,7 +342,7 @@ function Reports() {
             >
               Select All
             </button>
-            <span className="text-slate-600">|</span>
+            <span className="text-slate-300 dark:text-slate-600">|</span>
             <button
               onClick={() => setSelectedMetrics(prev => ({
                 ...prev,
@@ -366,7 +364,7 @@ function Reports() {
                 className={`px-3 py-1.5 rounded-lg border text-xs font-medium flex items-center gap-2 transition-all ${
                   isChecked 
                     ? 'bg-brand-primary/10 border-brand-primary/40 text-brand-primary shadow-sm' 
-                    : 'bg-slate-900/40 border-white/5 text-slate-400 hover:text-slate-200'
+                    : 'bg-slate-100/40 dark:bg-slate-900/40 border-slate-200 dark:border-white/5 text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200'
                 }`}
               >
                 <CheckCircle2 size={12} className={isChecked ? 'opacity-100' : 'opacity-20'} />
@@ -381,7 +379,7 @@ function Reports() {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="glass-card p-6 text-center">
           <span className="text-[10px] font-bold text-slate-500 uppercase">Filtered Lead count</span>
-          <p className="text-2xl font-bold font-outfit text-white mt-1">
+          <p className="text-2xl font-bold font-outfit text-slate-900 dark:text-white mt-1">
             {getFilteredLeads().length} leads
           </p>
         </div>
@@ -393,7 +391,7 @@ function Reports() {
         </div>
         <div className="glass-card p-6 text-center">
           <span className="text-[10px] font-bold text-slate-500 uppercase">Active Partners Scoped</span>
-          <p className="text-2xl font-bold font-outfit text-white mt-1">
+          <p className="text-2xl font-bold font-outfit text-slate-900 dark:text-white mt-1">
             {getFilteredPartners().length} partners
           </p>
         </div>
@@ -402,15 +400,15 @@ function Reports() {
       {/* Section 4: Print chart */}
       <div className="glass-card p-6 space-y-4 chart-container">
         <div>
-          <h2 className="text-base font-bold font-outfit text-slate-200">Regional Sales Valuation Breakdown</h2>
+          <h2 className="text-base font-bold font-outfit text-slate-800 dark:text-slate-200">Regional Sales Valuation Breakdown</h2>
           <p className="text-xs text-slate-500">Pipeline totals and total leads count scoped by region</p>
         </div>
         <div className="h-[250px] w-full pt-4">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={getChartData()} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-              <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.03)" vertical={false} />
-              <XAxis dataKey="name" stroke="rgba(255,255,255,0.2)" fontSize={10} tickLine={false} />
-              <YAxis stroke="rgba(255,255,255,0.2)" fontSize={10} tickLine={false} axisLine={false} />
+              <CartesianGrid strokeDasharray="3 3" stroke="rgba(148,163,184,0.12)" vertical={false} />
+              <XAxis dataKey="name" stroke="#94a3b8" fontSize={10} tickLine={false} />
+              <YAxis stroke="#94a3b8" fontSize={10} tickLine={false} axisLine={false} />
               <Tooltip />
               <Legend verticalAlign="top" height={36} iconSize={12} wrapperStyle={{ fontSize: 11 }} />
               <Bar dataKey="Leads Count" fill="#6366f1" radius={[4, 4, 0, 0]} />
@@ -422,12 +420,12 @@ function Reports() {
 
       {/* Section 5: Data Preview list */}
       <div className="glass-card overflow-hidden">
-        <div className="p-4 border-b border-white/5 bg-slate-900/30 flex items-center justify-between">
+        <div className="p-4 border-b border-slate-200/60 dark:border-white/5 bg-slate-100/50 dark:bg-slate-900/30 flex items-center justify-between">
           <div>
-            <h2 className="text-xs font-bold text-slate-200 uppercase tracking-wider">Export Preview</h2>
+            <h2 className="text-xs font-bold text-slate-800 dark:text-slate-200 uppercase tracking-wider">Export Preview</h2>
             <p className="text-[10px] text-slate-500">Showing first 5 scoped records matching filters</p>
           </div>
-          <span className="text-[10px] font-bold text-slate-400">Total Scoped: {currentFilteredData.length}</span>
+          <span className="text-[10px] font-bold text-slate-550 dark:text-slate-400">Total Scoped: {currentFilteredData.length}</span>
         </div>
         
         {loading ? (
@@ -442,7 +440,7 @@ function Reports() {
           <div className="overflow-x-auto">
             <table className="w-full border-collapse text-left">
               <thead>
-                <tr className="border-b border-white/5 bg-slate-900/20 text-[9px] font-bold text-slate-400 uppercase tracking-wider">
+                <tr className="border-b border-slate-200/60 dark:border-white/5 bg-slate-50 dark:bg-slate-900/20 text-[9px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
                   {availableColumns[dataType]
                     .filter(c => selectedMetrics[dataType].includes(c.id))
                     .map(col => (
@@ -451,9 +449,9 @@ function Reports() {
                   }
                 </tr>
               </thead>
-              <tbody className="divide-y divide-white/5 text-[11px] text-slate-300">
+              <tbody className="divide-y divide-slate-200/60 dark:divide-white/5 text-[11px] text-slate-650 dark:text-slate-300">
                 {currentFilteredData.slice(0, 5).map((row, idx) => (
-                  <tr key={idx} className="hover:bg-slate-900/10">
+                  <tr key={idx} className="hover:bg-slate-100/40 dark:hover:bg-slate-900/10">
                     {availableColumns[dataType]
                       .filter(c => selectedMetrics[dataType].includes(c.id))
                       .map(col => {

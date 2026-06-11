@@ -128,10 +128,10 @@ function Partners() {
   };
 
   const getHeatmapColor = (count) => {
-    if (count === 0) return 'bg-slate-900/10 border-white/5 text-slate-600';
+    if (count === 0) return 'bg-slate-100/40 dark:bg-slate-900/10 border-slate-200/50 dark:border-white/5 text-slate-400 dark:text-slate-600';
     if (count === 1) return 'bg-brand-primary/10 border-brand-primary/20 text-brand-primary font-bold hover:bg-brand-primary/20 cursor-pointer';
-    if (count === 2) return 'bg-brand-primary/20 border-brand-primary/40 text-brand-primary font-extrabold hover:bg-brand-primary/30 cursor-pointer shadow-[0_0_8px_rgba(99,102,241,0.1)]';
-    return 'bg-brand-primary/30 border-brand-primary/60 text-white font-black hover:bg-brand-primary/40 cursor-pointer shadow-[0_0_12px_rgba(99,102,241,0.2)]';
+    if (count === 2) return 'bg-brand-primary/20 border-brand-primary/40 text-brand-primary font-extrabold hover:bg-brand-primary/30 cursor-pointer shadow-[0_0_8px_rgba(99,102,241,0.06)] dark:shadow-[0_0_8px_rgba(99,102,241,0.1)]';
+    return 'bg-brand-primary/30 border-brand-primary/60 text-slate-900 dark:text-white font-black hover:bg-brand-primary/45 cursor-pointer shadow-[0_0_12px_rgba(99,102,241,0.1)] dark:shadow-[0_0_12px_rgba(99,102,241,0.2)]';
   };
 
   // Formatter for Currency
@@ -196,7 +196,7 @@ function Partners() {
         description: 'System audit log captured outreach engagement or record sync.',
         type: 'activity',
         icon: Activity,
-        color: 'text-slate-400 bg-slate-800 border-white/5'
+        color: 'text-slate-500 dark:text-slate-400 bg-slate-100 dark:bg-slate-800 border-slate-200/60 dark:border-white/5'
       });
     }
 
@@ -217,10 +217,10 @@ function Partners() {
     <div className="space-y-8 animate-fade-in pb-12">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-extrabold font-outfit tracking-tight bg-gradient-to-r from-white via-slate-100 to-slate-400 bg-clip-text text-transparent">
+        <h1 className="text-3xl font-extrabold font-outfit tracking-tight bg-gradient-to-r from-slate-900 via-slate-800 to-slate-650 dark:from-white dark:via-slate-100 dark:to-slate-400 bg-clip-text text-transparent">
           Partner Intelligence Directory
         </h1>
-        <p className="text-sm text-slate-400 mt-1">
+        <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
           Perform channel sales monitoring, view tier metrics, analyze partner locations, and drill down into activity timelines.
         </p>
       </div>
@@ -230,7 +230,7 @@ function Partners() {
         {/* Heatmap Grid Panel */}
         <div className="glass-card p-6 lg:col-span-2 space-y-4">
           <div>
-            <h2 className="text-base font-bold font-outfit text-slate-200">Regional Partner Density Heatmap</h2>
+            <h2 className="text-base font-bold font-outfit text-slate-800 dark:text-slate-200">Regional Partner Density Heatmap</h2>
             <p className="text-xs text-slate-500">Click cells to filter table by region and tier. Glowing accents indicate high concentration.</p>
           </div>
 
@@ -273,13 +273,12 @@ function Partners() {
                 ))}
               </div>
             </div>
-          </div>
         </div>
 
         {/* Heatmap filter summary widget */}
         <div className="glass-card p-6 flex flex-col justify-between">
           <div>
-            <h2 className="text-base font-bold font-outfit text-slate-200">Heatmap Intelligence</h2>
+            <h2 className="text-base font-bold font-outfit text-slate-800 dark:text-slate-200">Heatmap Intelligence</h2>
             <p className="text-xs text-slate-500">Active metrics filter status</p>
           </div>
 
@@ -298,42 +297,42 @@ function Partners() {
                     <X size={10} />
                   </button>
                 </div>
-                <p className="text-sm font-semibold text-white">
+                <p className="text-sm font-semibold text-slate-900 dark:text-white">
                   {activeHeatmapCell.tier} Partners in {activeHeatmapCell.region}
                 </p>
-                <div className="grid grid-cols-2 gap-2 pt-2 text-[10px] text-slate-400 border-t border-brand-primary/10">
+                <div className="grid grid-cols-2 gap-2 pt-2 text-[10px] text-slate-500 dark:text-slate-400 border-t border-brand-primary/10">
                   <div>
                     <p className="text-slate-500">Group Count</p>
-                    <p className="font-bold text-slate-200 text-sm mt-0.5">
+                    <p className="font-bold text-slate-800 dark:text-slate-200 text-sm mt-0.5">
                       {partners.length} Partners
                     </p>
                   </div>
                   <div>
                     <p className="text-slate-500">Group Revenue</p>
-                    <p className="font-bold text-slate-200 text-sm mt-0.5">
+                    <p className="font-bold text-slate-800 dark:text-slate-200 text-sm mt-0.5">
                       {formatCurrency(partners.reduce((sum, p) => sum + p.annual_revenue_inr, 0))}
                     </p>
                   </div>
                 </div>
               </div>
             ) : (
-              <div className="p-6 rounded-xl border border-dashed border-white/5 bg-slate-900/10 text-center text-xs text-slate-500">
+              <div className="p-6 rounded-xl border border-dashed border-slate-200 dark:border-white/5 bg-slate-50 dark:bg-slate-900/10 text-center text-xs text-slate-550 dark:text-slate-500">
                 No cells selected. Click a heatmap cell to filter the directory table by region and tier.
               </div>
             )}
 
-            <div className="text-[11px] text-slate-400 leading-relaxed bg-slate-900/20 p-3 rounded-lg border border-white/5">
-              💡 <span className="font-semibold text-slate-300">Observation</span>: Gold partners reside heavily in West and South regions, directing high contract valuations. Consider allocating additional lead intelligence resources to these hubs.
+            <div className="text-[11px] text-slate-600 dark:text-slate-400 leading-relaxed bg-slate-50 dark:bg-slate-900/20 p-3 rounded-lg border border-slate-200 dark:border-white/5">
+              💡 <span className="font-semibold text-slate-800 dark:text-slate-300">Observation</span>: Gold partners reside heavily in West and South regions, directing high contract valuations. Consider allocating additional lead intelligence resources to these hubs.
             </div>
           </div>
 
           <button
             onClick={resetFilters}
-            className="w-full py-2 bg-slate-900 border border-white/5 hover:bg-slate-900/60 rounded-xl text-xs font-bold font-outfit transition-all duration-300"
+            className="w-full py-2 bg-white dark:bg-slate-900 border border-slate-200 dark:border-white/5 hover:bg-slate-50 dark:hover:bg-slate-900/60 rounded-xl text-xs font-bold font-outfit text-slate-800 dark:text-slate-200 transition-all duration-300"
           >
             RESET ALL FILTERS
           </button>
-        </div>
+        </div>   </div>
       </div>
 
       {/* Filter and Search Bar */}
@@ -400,38 +399,38 @@ function Partners() {
           <div className="overflow-x-auto">
             <table className="w-full border-collapse text-left">
               <thead>
-                <tr className="border-b border-white/5 bg-slate-900/30 text-[10px] font-bold text-slate-400 uppercase tracking-wider font-outfit select-none">
-                  <th className="py-4 px-6 cursor-pointer hover:text-white" onClick={() => handleSort('company_name')}>
+                <tr className="border-b border-slate-200/60 dark:border-white/5 bg-slate-100/50 dark:bg-slate-900/30 text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider font-outfit select-none">
+                  <th className="py-4 px-6 cursor-pointer hover:text-slate-800 dark:hover:text-white" onClick={() => handleSort('company_name')}>
                     <div className="flex items-center gap-1.5">
                       <span>Company Name</span>
                       {sortBy === 'company_name' && (sortDir === 'asc' ? <ChevronUp size={12} /> : <ChevronDown size={12} />)}
                     </div>
                   </th>
-                  <th className="py-4 px-6 cursor-pointer hover:text-white" onClick={() => handleSort('contact_name')}>
+                  <th className="py-4 px-6 cursor-pointer hover:text-slate-800 dark:hover:text-white" onClick={() => handleSort('contact_name')}>
                     <div className="flex items-center gap-1.5">
                       <span>Contact Partner</span>
                       {sortBy === 'contact_name' && (sortDir === 'asc' ? <ChevronUp size={12} /> : <ChevronDown size={12} />)}
                     </div>
                   </th>
-                  <th className="py-4 px-6 cursor-pointer hover:text-white" onClick={() => handleSort('region')}>
+                  <th className="py-4 px-6 cursor-pointer hover:text-slate-800 dark:hover:text-white" onClick={() => handleSort('region')}>
                     <div className="flex items-center gap-1.5">
                       <span>Region</span>
                       {sortBy === 'region' && (sortDir === 'asc' ? <ChevronUp size={12} /> : <ChevronDown size={12} />)}
                     </div>
                   </th>
-                  <th className="py-4 px-6 cursor-pointer hover:text-white" onClick={() => handleSort('tier')}>
+                  <th className="py-4 px-6 cursor-pointer hover:text-slate-800 dark:hover:text-white" onClick={() => handleSort('tier')}>
                     <div className="flex items-center gap-1.5">
                       <span>Tier</span>
                       {sortBy === 'tier' && (sortDir === 'asc' ? <ChevronUp size={12} /> : <ChevronDown size={12} />)}
                     </div>
                   </th>
-                  <th className="py-4 px-6 cursor-pointer hover:text-white text-right" onClick={() => handleSort('annual_revenue_inr')}>
+                  <th className="py-4 px-6 cursor-pointer hover:text-slate-800 dark:hover:text-white text-right" onClick={() => handleSort('annual_revenue_inr')}>
                     <div className="flex items-center justify-end gap-1.5">
                       <span>Annual Revenue</span>
                       {sortBy === 'annual_revenue_inr' && (sortDir === 'asc' ? <ChevronUp size={12} /> : <ChevronDown size={12} />)}
                     </div>
                   </th>
-                  <th className="py-4 px-6 cursor-pointer hover:text-white text-right" onClick={() => handleSort('deal_count')}>
+                  <th className="py-4 px-6 cursor-pointer hover:text-slate-800 dark:hover:text-white text-right" onClick={() => handleSort('deal_count')}>
                     <div className="flex items-center justify-end gap-1.5">
                       <span>Deals</span>
                       {sortBy === 'deal_count' && (sortDir === 'asc' ? <ChevronUp size={12} /> : <ChevronDown size={12} />)}
@@ -441,14 +440,14 @@ function Partners() {
                   <th className="py-4 px-6 text-center">Status</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-white/5 text-xs text-slate-300">
+              <tbody className="divide-y divide-slate-200/60 dark:divide-white/5 text-xs text-slate-650 dark:text-slate-300">
                 {partners.map(p => (
                   <tr 
                     key={p.partner_id}
                     onClick={() => setSelectedPartnerId(p.partner_id)}
-                    className="hover:bg-slate-900/30 transition-all cursor-pointer group"
+                    className="hover:bg-slate-100/60 dark:hover:bg-slate-900/30 transition-all cursor-pointer group"
                   >
-                    <td className="py-4 px-6 font-semibold text-white group-hover:text-brand-primary transition-colors">
+                    <td className="py-4 px-6 font-semibold text-slate-950 dark:text-white group-hover:text-brand-primary transition-colors">
                       {p.company_name}
                     </td>
                     <td className="py-4 px-6">{p.contact_name}</td>
@@ -475,7 +474,7 @@ function Partners() {
                         </span>
                       )}
                     </td>
-                    <td className="py-4 px-6 text-right font-medium font-outfit text-slate-200">
+                    <td className="py-4 px-6 text-right font-medium font-outfit text-slate-800 dark:text-slate-200">
                       {formatCurrency(p.annual_revenue_inr)}
                     </td>
                     <td className="py-4 px-6 text-right font-outfit">{p.deal_count}</td>
@@ -506,21 +505,21 @@ function Partners() {
           />
 
           {/* Drawer Body */}
-          <div className="relative w-full max-w-2xl bg-[#090d16] border-l border-white/5 shadow-2xl h-full flex flex-col z-10 animate-slide-in">
+          <div className="relative w-full max-w-2xl bg-white dark:bg-[#090d16] border-l border-slate-200 dark:border-white/5 shadow-2xl h-full flex flex-col z-10 animate-slide-in">
             {/* Header */}
-            <div className="h-20 flex items-center justify-between px-6 border-b border-white/5">
+            <div className="h-20 flex items-center justify-between px-6 border-b border-slate-200 dark:border-white/5">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-primary to-brand-purple flex items-center justify-center shadow-md font-bold text-white text-base">
                   {partnerDetail ? partnerDetail.company_name.charAt(0) : '?'}
                 </div>
                 <div>
-                  <h3 className="font-bold text-base text-white">{partnerDetail?.company_name || 'Loading Partner Detail...'}</h3>
+                  <h3 className="font-bold text-base text-slate-900 dark:text-white">{partnerDetail?.company_name || 'Loading Partner Detail...'}</h3>
                   <p className="text-[10px] text-slate-500 font-semibold tracking-wider uppercase">Partner intelligence profile</p>
                 </div>
               </div>
               <button 
                 onClick={() => setSelectedPartnerId(null)}
-                className="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-900"
+                className="p-2 rounded-xl text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-900"
               >
                 <X size={18} />
               </button>
@@ -536,10 +535,10 @@ function Partners() {
                 
                 {/* Section 1: Contact Metadata Cards */}
                 <div className="grid grid-cols-2 gap-4">
-                  <div className="p-4 rounded-xl bg-slate-900/30 border border-white/5 space-y-1.5">
+                  <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-900/30 border border-slate-200 dark:border-white/5 space-y-1.5">
                     <span className="text-[9px] font-bold text-slate-500 uppercase">Primary Contact</span>
-                    <p className="text-xs font-semibold text-white">{partnerDetail.contact_name}</p>
-                    <div className="flex flex-col gap-1 text-[11px] text-slate-400 pt-1.5 border-t border-white/5 mt-1">
+                    <p className="text-xs font-semibold text-slate-900 dark:text-white">{partnerDetail.contact_name}</p>
+                    <div className="flex flex-col gap-1 text-[11px] text-slate-500 dark:text-slate-400 pt-1.5 border-t border-slate-200 dark:border-white/5 mt-1">
                       <div className="flex items-center gap-1.5">
                         <Mail size={12} className="text-slate-500" />
                         <span className="truncate">{partnerDetail.contact_email}</span>
@@ -551,10 +550,10 @@ function Partners() {
                     </div>
                   </div>
 
-                  <div className="p-4 rounded-xl bg-slate-900/30 border border-white/5 space-y-1.5">
+                  <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-900/30 border border-slate-200 dark:border-white/5 space-y-1.5">
                     <span className="text-[9px] font-bold text-slate-500 uppercase">Operational Hub</span>
-                    <p className="text-xs font-semibold text-white">{partnerDetail.city}</p>
-                    <div className="flex flex-col gap-1 text-[11px] text-slate-400 pt-1.5 border-t border-white/5 mt-1">
+                    <p className="text-xs font-semibold text-slate-900 dark:text-white">{partnerDetail.city}</p>
+                    <div className="flex flex-col gap-1 text-[11px] text-slate-500 dark:text-slate-400 pt-1.5 border-t border-slate-200 dark:border-white/5 mt-1">
                       <div className="flex items-center gap-1.5">
                         <MapPin size={12} className="text-slate-500" />
                         <span>{partnerDetail.region} Region</span>
@@ -569,15 +568,15 @@ function Partners() {
 
                 {/* Section 2: Summary Stats */}
                 <div className="grid grid-cols-3 gap-4">
-                  <div className="p-4 rounded-xl border border-white/5 bg-slate-900/10 text-center">
+                  <div className="p-4 rounded-xl border border-slate-200 dark:border-white/5 bg-slate-50 dark:bg-slate-900/10 text-center">
                     <span className="text-[9px] font-bold text-slate-500 uppercase">Annual Revenue</span>
-                    <p className="text-lg font-bold font-outfit text-white mt-1">{formatCurrency(partnerDetail.annual_revenue_inr)}</p>
+                    <p className="text-lg font-bold font-outfit text-slate-900 dark:text-white mt-1">{formatCurrency(partnerDetail.annual_revenue_inr)}</p>
                   </div>
-                  <div className="p-4 rounded-xl border border-white/5 bg-slate-900/10 text-center">
+                  <div className="p-4 rounded-xl border border-slate-200 dark:border-white/5 bg-slate-50 dark:bg-slate-900/10 text-center">
                     <span className="text-[9px] font-bold text-slate-500 uppercase">Total Deals</span>
-                    <p className="text-lg font-bold font-outfit text-white mt-1">{partnerDetail.deal_count}</p>
+                    <p className="text-lg font-bold font-outfit text-slate-900 dark:text-white mt-1">{partnerDetail.deal_count}</p>
                   </div>
-                  <div className="p-4 rounded-xl border border-white/5 bg-slate-900/10 text-center">
+                  <div className="p-4 rounded-xl border border-slate-200 dark:border-white/5 bg-slate-50 dark:bg-slate-900/10 text-center">
                     <span className="text-[9px] font-bold text-slate-500 uppercase">Active Leads</span>
                     <p className="text-lg font-bold font-outfit text-brand-primary mt-1">{partnerDetail.active_leads}</p>
                   </div>
@@ -587,16 +586,16 @@ function Partners() {
                 {(() => {
                   const funnel = getFunnelStats(partnerDetail);
                   return (
-                    <div className="p-4 rounded-xl bg-slate-900/30 border border-white/5 space-y-3">
+                    <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-900/30 border border-slate-200 dark:border-white/5 space-y-3">
                       <div className="flex items-center justify-between">
                         <span className="text-[9px] font-bold text-slate-500 uppercase">Lead Conversion Funnel</span>
                         <span className="text-[10px] font-bold text-brand-success">{funnel.rate}% Performance Score</span>
                       </div>
-                      <div className="flex items-center justify-between text-xs font-semibold text-slate-300">
+                      <div className="flex items-center justify-between text-xs font-semibold text-slate-600 dark:text-slate-300">
                         <span>Converted: {funnel.converted} leads</span>
                         <span>Total Pipeline: {funnel.total} leads</span>
                       </div>
-                      <div className="w-full bg-slate-900 h-2 rounded-full overflow-hidden border border-white/5 shadow-inner">
+                      <div className="w-full bg-slate-200 dark:bg-slate-900 h-2 rounded-full overflow-hidden border border-slate-300 dark:border-white/5 shadow-inner">
                         <div 
                           className="bg-brand-success h-full rounded-full shadow-[0_0_8px_#10b981]"
                           style={{ width: `${funnel.rate}%` }}
@@ -608,14 +607,14 @@ function Partners() {
 
                 {/* Section 4: Chronological Lead Timeline */}
                 <div className="space-y-4">
-                  <h4 className="text-xs font-bold text-slate-300 font-outfit uppercase tracking-wider">Activity History Timeline</h4>
+                  <h4 className="text-xs font-bold text-slate-700 dark:text-slate-300 font-outfit uppercase tracking-wider">Activity History Timeline</h4>
                   
                   {compileTimeline(partnerDetail).length === 0 ? (
-                    <div className="p-6 text-center text-xs text-slate-500 border border-dashed border-white/5 rounded-xl">
+                    <div className="p-6 text-center text-xs text-slate-500 border border-dashed border-slate-200 dark:border-white/5 rounded-xl">
                       No activity registered for this partner yet.
                     </div>
                   ) : (
-                    <div className="relative border-l border-white/10 pl-6 ml-3 space-y-6">
+                    <div className="relative border-l border-slate-200 dark:border-white/10 pl-6 ml-3 space-y-6">
                       {compileTimeline(partnerDetail).map((event, idx) => {
                         const Icon = event.icon;
                         return (
@@ -627,14 +626,14 @@ function Partners() {
                             
                             <div className="space-y-1">
                               <div className="flex items-center justify-between">
-                                <span className="text-xs font-bold text-white group-hover/item:text-brand-primary transition-colors">
+                                <span className="text-xs font-bold text-slate-900 dark:text-white group-hover/item:text-brand-primary transition-colors">
                                   {event.title}
                                 </span>
                                 <span className="text-[10px] text-slate-500 font-medium font-outfit">
                                   {event.date}
                                 </span>
                               </div>
-                              <p className="text-[11px] text-slate-400 leading-relaxed">
+                              <p className="text-[11px] text-slate-600 dark:text-slate-400 leading-relaxed">
                                 {event.description}
                               </p>
                             </div>

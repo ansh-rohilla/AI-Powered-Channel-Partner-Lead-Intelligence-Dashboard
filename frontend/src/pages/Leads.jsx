@@ -25,11 +25,11 @@ const LeadCard = React.memo(({ lead, colId, getScoreColor, formatCurrency, setSe
       draggable="true"
       onDragStart={(e) => handleDragStart(e, lead.lead_id)}
       onClick={() => setSelectedLeadId(lead.lead_id)}
-      className="glass-card p-4 hover:border-white/10 hover:shadow-md cursor-pointer relative group transition-all duration-300 active:cursor-grabbing"
+      className="glass-card p-4 hover:border-slate-350 dark:hover:border-white/10 hover:shadow-md cursor-pointer relative group transition-all duration-300 active:cursor-grabbing"
     >
       <div className="space-y-2">
         <div className="flex items-start justify-between gap-2">
-          <span className="text-[11px] font-bold text-white leading-tight truncate flex-1 group-hover:text-brand-primary transition-colors font-sans">
+          <span className="text-[11px] font-bold text-slate-900 dark:text-white leading-tight truncate flex-1 group-hover:text-brand-primary transition-colors font-sans">
             {lead.company_name}
           </span>
           <span className={`text-[8px] px-1.5 py-0.5 rounded font-extrabold tracking-wider font-outfit ${colors.bg} ${colors.text}`}>
@@ -37,7 +37,7 @@ const LeadCard = React.memo(({ lead, colId, getScoreColor, formatCurrency, setSe
           </span>
         </div>
         
-        <div className="flex items-center justify-between text-[10px] text-slate-400">
+        <div className="flex items-center justify-between text-[10px] text-slate-500 dark:text-slate-400">
           <span className="font-outfit font-semibold">{formatCurrency(lead.deal_value_inr)}</span>
           <div className="flex items-center gap-1">
             <MapPin size={8} />
@@ -46,13 +46,13 @@ const LeadCard = React.memo(({ lead, colId, getScoreColor, formatCurrency, setSe
         </div>
 
         {/* Quick movement selectors */}
-        <div className="pt-2 border-t border-white/5 flex items-center justify-between opacity-0 group-hover:opacity-100 transition-opacity">
-          <span className="text-[8px] text-slate-500 uppercase font-semibold">Quick Move</span>
+        <div className="pt-2 border-t border-slate-200/60 dark:border-white/5 flex items-center justify-between opacity-0 group-hover:opacity-100 transition-opacity">
+          <span className="text-[8px] text-slate-550 dark:text-slate-500 uppercase font-semibold">Quick Move</span>
           <div className="flex items-center gap-1">
             {colId === 'New' && (
               <button 
                 onClick={(e) => { e.stopPropagation(); handleQuickMove(lead, 'Contacted'); }}
-                className="p-1 rounded bg-slate-900 hover:bg-brand-primary/20 text-slate-400 hover:text-white"
+                className="p-1 rounded bg-slate-100 dark:bg-slate-900 hover:bg-brand-primary/20 text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white"
                 title="Move to Contacted"
               >
                 <ArrowRight size={10} />
@@ -61,7 +61,7 @@ const LeadCard = React.memo(({ lead, colId, getScoreColor, formatCurrency, setSe
             {colId === 'Contacted' && (
               <button 
                 onClick={(e) => { e.stopPropagation(); handleQuickMove(lead, 'Qualified'); }}
-                className="p-1 rounded bg-slate-900 hover:bg-brand-primary/20 text-slate-400 hover:text-white"
+                className="p-1 rounded bg-slate-100 dark:bg-slate-900 hover:bg-brand-primary/20 text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white"
                 title="Move to Qualified"
               >
                 <ArrowRight size={10} />
@@ -71,14 +71,14 @@ const LeadCard = React.memo(({ lead, colId, getScoreColor, formatCurrency, setSe
               <div className="flex gap-1">
                 <button 
                   onClick={(e) => { e.stopPropagation(); handleQuickMove(lead, 'Converted'); }}
-                  className="px-1.5 py-0.5 rounded bg-slate-900 hover:bg-brand-success/20 text-slate-400 hover:text-brand-success text-[8px] font-bold"
+                  className="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-900 hover:bg-brand-success/20 text-slate-500 dark:text-slate-400 hover:text-brand-success dark:hover:text-brand-success text-[8px] font-bold"
                   title="Close Won"
                 >
                   Won
                 </button>
                 <button 
                   onClick={(e) => { e.stopPropagation(); handleQuickMove(lead, 'Lost'); }}
-                  className="px-1.5 py-0.5 rounded bg-slate-900 hover:bg-brand-danger/20 text-slate-400 hover:text-brand-danger text-[8px] font-bold"
+                  className="px-1.5 py-0.5 rounded bg-slate-100 dark:bg-slate-900 hover:bg-brand-danger/20 text-slate-500 dark:text-slate-400 hover:text-brand-danger dark:hover:text-brand-danger text-[8px] font-bold"
                   title="Close Lost"
                 >
                   Lost
@@ -395,20 +395,20 @@ function Leads() {
       return {
         title: 'Immediate Sales Outreach',
         desc: 'Assigned representative must call the contact within 4 hours. Connect with Gold-tier partners for accelerated deal closure.',
-        style: 'bg-emerald-950/30 border-emerald-500/20 text-emerald-300'
+        style: 'bg-emerald-50 dark:bg-emerald-950/30 border-emerald-200 dark:border-emerald-500/20 text-emerald-800 dark:text-emerald-300'
       };
     }
     if (score >= 40) {
       return {
         title: 'Schedule Regular Follow-up',
         desc: 'Schedule a standard product demonstration. Follow up within 48 hours to gauge interest.',
-        style: 'bg-amber-950/30 border-amber-500/20 text-amber-300'
+        style: 'bg-amber-50 dark:bg-amber-950/30 border-amber-200 dark:border-amber-500/20 text-amber-800 dark:text-amber-300'
       };
     }
     return {
       title: 'Email Marketing Nurturing',
       desc: 'Channel sales reps should not spend primary calling hours. Place in the email drip campaign list to nurture over time.',
-      style: 'bg-slate-900/60 border-white/5 text-slate-400'
+      style: 'bg-slate-100 dark:bg-slate-900/60 border-slate-200 dark:border-white/5 text-slate-600 dark:text-slate-400'
     };
   };
 
@@ -416,10 +416,10 @@ function Leads() {
     <div className="space-y-8 animate-fade-in pb-12">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-extrabold font-outfit tracking-tight bg-gradient-to-r from-white via-slate-100 to-slate-400 bg-clip-text text-transparent">
+        <h1 className="text-3xl font-extrabold font-outfit tracking-tight bg-gradient-to-r from-slate-900 via-slate-800 to-slate-650 dark:from-white dark:via-slate-100 dark:to-slate-400 bg-clip-text text-transparent">
           Lead Prioritization Pipeline
         </h1>
-        <p className="text-sm text-slate-400 mt-1">
+        <p className="text-sm text-slate-550 dark:text-slate-400 mt-1">
           Monitor your channel leads pipeline. ML scores calculate conversion probability based on source channel, contact speed, and follow-up activities.
         </p>
       </div>
@@ -428,9 +428,9 @@ function Leads() {
         <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
           {Array.from({ length: 5 }).map((_, idx) => (
             <div key={idx} className="glass-card p-4 h-[400px] animate-pulse flex flex-col gap-4">
-              <div className="h-4 bg-slate-800 rounded w-28" />
-              <div className="h-24 bg-slate-800/40 rounded-xl" />
-              <div className="h-24 bg-slate-800/40 rounded-xl" />
+              <div className="h-4 bg-slate-200 dark:bg-slate-800 rounded w-28" />
+              <div className="h-24 bg-slate-100/50 dark:bg-slate-800/40 rounded-xl" />
+              <div className="h-24 bg-slate-100/50 dark:bg-slate-800/40 rounded-xl" />
             </div>
           ))}
         </div>
@@ -442,9 +442,9 @@ function Leads() {
             return (
               <div key={col.id} className="flex flex-col gap-4 min-w-[200px]">
                 {/* Column Title Card */}
-                <div className={`p-3 rounded-xl border border-white/5 bg-slate-900/20 border-t-2 ${col.color} flex justify-between items-center`}>
-                  <span className="text-xs font-bold text-slate-200 font-outfit tracking-wide">{col.title}</span>
-                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-950 text-slate-400">
+                <div className={`p-3 rounded-xl border border-slate-200 dark:border-white/5 bg-slate-100/50 dark:bg-slate-900/20 border-t-2 ${col.color} flex justify-between items-center`}>
+                  <span className="text-xs font-bold text-slate-850 dark:text-slate-200 font-outfit tracking-wide">{col.title}</span>
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-200 dark:bg-slate-955 text-slate-600 dark:text-slate-400">
                     {colLeads.length}
                   </span>
                 </div>
@@ -456,8 +456,8 @@ function Leads() {
                   onDrop={(e) => handleDrop(e, col.id)}
                   className={`space-y-3 flex-1 min-h-[450px] rounded-2xl p-2 border transition-all duration-200 ${
                     draggedOverCol === col.id 
-                      ? 'bg-slate-900/40 border-brand-primary/40 shadow-[0_0_12px_rgba(99,102,241,0.1)]' 
-                      : 'bg-slate-950/20 border-white/5'
+                      ? 'bg-slate-100 dark:bg-slate-900/40 border-brand-primary/40 shadow-[0_0_12px_rgba(99,102,241,0.1)]' 
+                      : 'bg-slate-100/35 dark:bg-slate-950/20 border-slate-200 dark:border-white/5'
                   }`}
                 >
                   {colLeads.map(lead => (
@@ -473,7 +473,7 @@ function Leads() {
                     />
                   ))}
                   {colLeads.length === 0 && (
-                    <div className="h-full flex items-center justify-center p-6 text-center text-[10px] text-slate-600 border border-dashed border-white/5 rounded-xl">
+                    <div className="h-full flex items-center justify-center p-6 text-center text-[10px] text-slate-400 dark:text-slate-600 border border-dashed border-slate-200 dark:border-white/5 rounded-xl">
                       No Leads in this stage.
                     </div>
                   )}
@@ -494,21 +494,21 @@ function Leads() {
           />
 
           {/* Drawer Body */}
-          <div className="relative w-full max-w-2xl bg-[#090d16] border-l border-white/5 shadow-2xl h-full flex flex-col z-10 animate-slide-in">
+          <div className="relative w-full max-w-2xl bg-white dark:bg-[#090d16] border-l border-slate-200 dark:border-white/5 shadow-2xl h-full flex flex-col z-10 animate-slide-in">
             {/* Header */}
-            <div className="h-20 flex items-center justify-between px-6 border-b border-white/5">
+            <div className="h-20 flex items-center justify-between px-6 border-b border-slate-200 dark:border-white/5">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-primary to-brand-purple flex items-center justify-center shadow-md font-bold text-white text-base">
                   L
                 </div>
                 <div>
-                  <h3 className="font-bold text-base text-white">{leadDetail?.company_name || 'Loading Lead Detail...'}</h3>
+                  <h3 className="font-bold text-base text-slate-900 dark:text-white">{leadDetail?.company_name || 'Loading Lead Detail...'}</h3>
                   <p className="text-[10px] text-slate-500 font-semibold tracking-wider uppercase">Lead intelligence summary</p>
                 </div>
               </div>
               <button 
                 onClick={() => setSelectedLeadId(null)}
-                className="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-900"
+                className="p-2 rounded-xl text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-900"
               >
                 <X size={18} />
               </button>
@@ -523,11 +523,11 @@ function Leads() {
               <div className="flex-1 overflow-y-auto p-6 space-y-6">
                 
                 {/* 1. ML Scoring Dashboard Card */}
-                <div className="p-6 rounded-2xl bg-slate-900/30 border border-white/5 space-y-4">
+                <div className="p-6 rounded-2xl bg-slate-50 dark:bg-slate-900/30 border border-slate-200 dark:border-white/5 space-y-4">
                   <div className="flex items-center justify-between">
                     <div>
                       <span className="text-[9px] font-bold text-slate-500 uppercase tracking-wide">AI Conversion Probability</span>
-                      <h4 className="text-2xl font-bold font-outfit text-white mt-0.5">
+                      <h4 className="text-2xl font-bold font-outfit text-slate-900 dark:text-white mt-0.5">
                         {leadDetail.ml_score ? `${leadDetail.ml_score}%` : 'Pending'}
                       </h4>
                     </div>
@@ -536,7 +536,7 @@ function Leads() {
                     {(() => {
                       const colors = getScoreColor(leadDetail.ml_score);
                       return (
-                        <span className={`text-[10px] px-2.5 py-1 rounded-full font-bold border ${colors.bg} ${colors.text} border-white/5`}>
+                        <span className={`text-[10px] px-2.5 py-1 rounded-full font-bold border ${colors.bg} ${colors.text} border-slate-200/50 dark:border-white/5`}>
                           {getScoreLabel(leadDetail.ml_score)}
                         </span>
                       );
@@ -545,7 +545,7 @@ function Leads() {
 
                   {/* Progress bar */}
                   {leadDetail.ml_score && (
-                    <div className="w-full bg-slate-950 h-2.5 rounded-full overflow-hidden border border-white/5 shadow-inner">
+                    <div className="w-full bg-slate-200 dark:bg-slate-950 h-2.5 rounded-full overflow-hidden border border-slate-300 dark:border-white/5 shadow-inner">
                       <div 
                         className={`h-full rounded-full ${getScoreColor(leadDetail.ml_score).bar}`}
                         style={{ width: `${leadDetail.ml_score}%` }}
@@ -554,29 +554,29 @@ function Leads() {
                   )}
 
                   {/* Explainability driver cards */}
-                  <div className="pt-2 border-t border-white/5">
+                  <div className="pt-2 border-t border-slate-200 dark:border-white/5">
                     <span className="text-[9px] font-bold text-slate-500 uppercase tracking-wide">Key Scoring Drivers</span>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-2">
                       {leadDetail.lead_source === 'Referral' && (
-                        <div className="flex items-center gap-2 p-2 rounded-lg bg-emerald-950/20 border border-emerald-500/10 text-[10px] text-emerald-300">
+                        <div className="flex items-center gap-2 p-2 rounded-lg bg-emerald-50 dark:bg-emerald-950/20 border border-emerald-250/20 dark:border-emerald-500/10 text-[10px] text-emerald-800 dark:text-emerald-300">
                           <TrendingUp size={12} />
                           <span>Warm referral channels: +28% probability</span>
                         </div>
                       )}
                       {leadDetail.time_to_first_contact <= 2 && leadDetail.time_to_first_contact !== null && (
-                        <div className="flex items-center gap-2 p-2 rounded-lg bg-emerald-950/20 border border-emerald-500/10 text-[10px] text-emerald-300">
+                        <div className="flex items-center gap-2 p-2 rounded-lg bg-emerald-50 dark:bg-emerald-950/20 border border-emerald-250/20 dark:border-emerald-500/10 text-[10px] text-emerald-800 dark:text-emerald-300">
                           <Clock size={12} />
                           <span>Rapid contact latency: +20% probability</span>
                         </div>
                       )}
                       {leadDetail.follow_up_count >= 5 && (
-                        <div className="flex items-center gap-2 p-2 rounded-lg bg-emerald-950/20 border border-emerald-500/10 text-[10px] text-emerald-300">
+                        <div className="flex items-center gap-2 p-2 rounded-lg bg-emerald-50 dark:bg-emerald-950/20 border border-emerald-250/20 dark:border-emerald-500/10 text-[10px] text-emerald-800 dark:text-emerald-300">
                           <PhoneCall size={12} />
                           <span>High outreach follow-ups: +15% probability</span>
                         </div>
                       )}
                       {leadDetail.lead_source === 'Cold Call' && (
-                        <div className="flex items-center gap-2 p-2 rounded-lg bg-rose-950/20 border border-rose-500/10 text-[10px] text-rose-300">
+                        <div className="flex items-center gap-2 p-2 rounded-lg bg-rose-50 dark:bg-rose-950/20 border border-rose-250/20 dark:border-rose-500/10 text-[10px] text-rose-800 dark:text-rose-300">
                           <AlertTriangle size={12} />
                           <span>Low-yield Cold Call channels: -12% probability</span>
                         </div>
@@ -599,30 +599,30 @@ function Leads() {
 
                 {/* 3. Lead Parameters & Demographics */}
                 <div className="grid grid-cols-2 gap-4">
-                  <div className="p-4 rounded-xl bg-slate-900/30 border border-white/5 space-y-2">
+                  <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-900/30 border border-slate-200 dark:border-white/5 space-y-2">
                     <span className="text-[9px] font-bold text-slate-500 uppercase">Contact Information</span>
-                    <div className="space-y-1 text-xs text-slate-300">
+                    <div className="space-y-1 text-xs text-slate-700 dark:text-slate-300">
                       <div className="flex items-center gap-2">
-                        <User size={12} className="text-slate-500" />
+                        <User size={12} className="text-slate-550 dark:text-slate-500" />
                         <span>{leadDetail.contact_name}</span>
                       </div>
                       <div className="flex items-center gap-2">
-                        <Mail size={12} className="text-slate-500" />
+                        <Mail size={12} className="text-slate-550 dark:text-slate-500" />
                         <span className="truncate">{leadDetail.contact_email}</span>
                       </div>
                     </div>
                   </div>
 
-                  <div className="p-4 rounded-xl bg-slate-900/30 border border-white/5 space-y-2">
+                  <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-900/30 border border-slate-200 dark:border-white/5 space-y-2">
                     <span className="text-[9px] font-bold text-slate-500 uppercase">Pipeline Parameters</span>
-                    <div className="space-y-1 text-xs text-slate-300">
+                    <div className="space-y-1 text-xs text-slate-700 dark:text-slate-300">
                       <div className="flex items-center justify-between">
                         <span className="text-slate-500">Source:</span>
-                        <span className="font-semibold text-slate-200">{leadDetail.lead_source}</span>
+                        <span className="font-semibold text-slate-800 dark:text-slate-200">{leadDetail.lead_source}</span>
                       </div>
                       <div className="flex items-center justify-between">
                         <span className="text-slate-500">Product:</span>
-                        <span className="font-semibold text-slate-200">{leadDetail.product_interest}</span>
+                        <span className="font-semibold text-slate-800 dark:text-slate-200">{leadDetail.product_interest}</span>
                       </div>
                       <div className="flex items-center justify-between">
                         <span className="text-slate-500">Assigned Partner:</span>
@@ -635,9 +635,9 @@ function Leads() {
                 </div>
 
                 {/* 3.5 AI Partner Matchmaker Recommendations */}
-                <div className="p-4 rounded-xl bg-slate-900/30 border border-white/5 space-y-3">
+                <div className="p-4 rounded-xl bg-slate-55 dark:bg-slate-900/30 border border-slate-200 dark:border-white/5 space-y-3">
                   <div className="flex items-center justify-between">
-                    <h4 className="text-xs font-bold text-slate-300 font-outfit uppercase tracking-wider flex items-center gap-1.5">
+                    <h4 className="text-xs font-bold text-slate-700 dark:text-slate-300 font-outfit uppercase tracking-wider flex items-center gap-1.5">
                       <Sparkles size={12} className="text-brand-primary" />
                       AI Partner Recommendation
                     </h4>
@@ -656,14 +656,14 @@ function Leads() {
                             className={`p-2.5 rounded-lg border flex items-center justify-between transition-all ${
                               isCurrentlyAssigned 
                                 ? 'bg-brand-primary/5 border-brand-primary/20' 
-                                : 'bg-slate-950/40 border-white/5 hover:border-white/10'
+                                : 'bg-slate-100/40 dark:bg-slate-950/40 border-slate-200 dark:border-white/5 hover:border-slate-350 dark:hover:border-white/10'
                             }`}
                           >
                             <div className="space-y-1">
                               <div className="flex items-center gap-2">
-                                <span className="text-xs font-bold text-slate-200">{p.company_name}</span>
+                                <span className="text-xs font-bold text-slate-800 dark:text-slate-200">{p.company_name}</span>
                                 <span className={`text-[8px] px-1.5 py-0.2 rounded font-extrabold ${
-                                  p.tier === 'Gold' ? 'bg-amber-950/40 text-brand-warning' : p.tier === 'Silver' ? 'bg-indigo-950/40 text-brand-primary' : 'bg-slate-900 text-slate-400'
+                                  p.tier === 'Gold' ? 'bg-amber-950/40 text-brand-warning' : p.tier === 'Silver' ? 'bg-indigo-950/40 text-brand-primary' : 'bg-slate-200 dark:bg-slate-900 text-slate-600 dark:text-slate-400'
                                 }`}>
                                   {p.tier}
                                 </span>
@@ -673,13 +673,13 @@ function Leads() {
                                 <span>•</span>
                                 <span>Active Leads: {p.active_leads || 0}</span>
                                 <span>•</span>
-                                <span className="text-emerald-500">{p.isRegionMatch ? 'Direct regional fit' : 'Regional delegation'}</span>
+                                <span className="text-emerald-500 font-semibold">{p.isRegionMatch ? 'Direct regional fit' : 'Regional delegation'}</span>
                               </div>
                             </div>
                             
                             <div className="flex items-center gap-3">
                               <span className={`text-xs font-black font-outfit ${
-                                p.matchScore >= 80 ? 'text-brand-success' : p.matchScore >= 50 ? 'text-brand-warning' : 'text-slate-400'
+                                p.matchScore >= 80 ? 'text-brand-success' : p.matchScore >= 50 ? 'text-brand-warning' : 'text-slate-500'
                               }`}>
                                 {p.matchScore}% Match
                               </span>
@@ -690,7 +690,7 @@ function Leads() {
                                 <button
                                   type="button"
                                   onClick={() => handleAssignPartner(p.partner_id, p.company_name)}
-                                  className="px-2 py-1 bg-slate-900 hover:bg-brand-primary hover:text-white rounded text-[9px] font-bold text-slate-400 transition-all"
+                                  className="px-2 py-1 bg-slate-200 dark:bg-slate-900 hover:bg-brand-primary hover:text-white rounded text-[9px] font-bold text-slate-500 dark:text-slate-400 transition-all"
                                 >
                                   Assign
                                 </button>
@@ -704,8 +704,8 @@ function Leads() {
                 </div>
 
                 {/* 4. Edit Lead / Parameter Tweak Form (Real-time recalculation) */}
-                <form onSubmit={handleSaveEdit} className="p-4 rounded-xl bg-slate-900/30 border border-white/5 space-y-4">
-                  <h4 className="text-xs font-bold text-slate-300 font-outfit uppercase tracking-wider">Tweak Model Features & Status</h4>
+                <form onSubmit={handleSaveEdit} className="p-4 rounded-xl bg-slate-50 dark:bg-slate-900/30 border border-slate-200 dark:border-white/5 space-y-4">
+                  <h4 className="text-xs font-bold text-slate-700 dark:text-slate-300 font-outfit uppercase tracking-wider">Tweak Model Features & Status</h4>
                   
                   <div className="grid grid-cols-2 gap-4">
                     {/* Status */}
@@ -769,10 +769,10 @@ function Leads() {
                   </div>
 
                   {/* Live ML Score preview */}
-                  <div className="p-3 rounded-xl bg-slate-950/80 border border-white/5 flex items-center justify-between">
+                  <div className="p-3 rounded-xl bg-slate-100 dark:bg-slate-950/80 border border-slate-200 dark:border-white/5 flex items-center justify-between">
                     <div>
                       <span className="text-[9px] font-bold text-slate-500 uppercase tracking-wide">Live Model Score Preview</span>
-                      <p className="text-[10px] text-slate-400 mt-0.5">Estimated probability prior to database synchronization</p>
+                      <p className="text-[10px] text-slate-500 dark:text-slate-400 mt-0.5">Estimated probability prior to database synchronization</p>
                     </div>
                     <div className="flex items-center gap-2">
                       <span className="text-xs text-slate-500 line-through">
@@ -787,7 +787,7 @@ function Leads() {
                   <button
                     type="submit"
                     disabled={updating}
-                    className="w-full py-2.5 bg-brand-primary hover:bg-brand-primary/80 rounded-xl text-xs font-bold font-outfit transition-all duration-300"
+                    className="w-full py-2.5 bg-brand-primary hover:bg-brand-primary/80 rounded-xl text-xs font-bold font-outfit text-white transition-all duration-300"
                   >
                     {updating ? 'SAVING & RE-CALCULATING AI SCORE...' : 'SAVE CHANGES & SYNC MODEL'}
                   </button>

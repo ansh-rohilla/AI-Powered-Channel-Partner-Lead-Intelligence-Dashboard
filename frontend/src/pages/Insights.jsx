@@ -111,10 +111,10 @@ function Insights() {
     <div className="space-y-8 animate-fade-in pb-12">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-extrabold font-outfit tracking-tight bg-gradient-to-r from-white via-slate-100 to-slate-400 bg-clip-text text-transparent">
+        <h1 className="text-3xl font-extrabold font-outfit tracking-tight bg-gradient-to-r from-slate-900 via-slate-800 to-slate-650 dark:from-white dark:via-slate-100 dark:to-slate-400 bg-clip-text text-transparent">
           Explainable AI (XAI) & Insights
         </h1>
-        <p className="text-sm text-slate-400 mt-1">
+        <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
           Explore the drivers behind our lead prioritization scoring. Simulate hypothetical parameters to see how the neural network calculates conversion probability.
         </p>
       </div>
@@ -127,18 +127,18 @@ function Insights() {
           {/* Chart 1: Global Feature Importance */}
           <div className="glass-card p-6 space-y-6">
             <div>
-              <h2 className="text-base font-bold font-outfit text-white">Global Feature Importance (Neural Network)</h2>
+              <h2 className="text-base font-bold font-outfit text-slate-800 dark:text-white">Global Feature Importance (Neural Network)</h2>
               <p className="text-xs text-slate-500 mt-0.5">Relative feature contribution weights towards positive conversion label</p>
             </div>
 
             <div className="h-64">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart
-                  data={featureWeights}
+                   data={featureWeights}
                   layout="vertical"
                   margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
                 >
-                  <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.03)" horizontal={true} vertical={false} />
+                  <CartesianGrid strokeDasharray="3 3" stroke="rgba(148,163,184,0.12)" horizontal={true} vertical={false} />
                   <XAxis 
                     type="number" 
                     stroke="#64748b" 
@@ -154,7 +154,7 @@ function Insights() {
                     width={150}
                   />
                   <Tooltip
-                    cursor={{ fill: 'rgba(255,255,255,0.02)' }}
+                    cursor={{ fill: 'rgba(148,163,184,0.05)' }}
                     formatter={(value) => [`${value}% impact`, 'Feature Contribution']}
                   />
                   <Bar dataKey="weight" radius={[0, 4, 4, 0]}>
@@ -185,28 +185,28 @@ function Insights() {
           <div className="glass-card p-6 space-y-6">
             <div className="flex items-center justify-between">
               <div>
-                <h2 className="text-base font-bold font-outfit text-white">SHAP beeswarm Density Plot</h2>
+                <h2 className="text-base font-bold font-outfit text-slate-800 dark:text-white">SHAP beeswarm Density Plot</h2>
                 <p className="text-xs text-slate-500 mt-0.5">Visual representation of impact distributions across test set data points</p>
               </div>
               
               <div className="flex items-center gap-4 text-[9px] font-semibold">
                 <div className="flex items-center gap-1.5">
                   <span className="w-2.5 h-2.5 rounded bg-brand-primary" />
-                  <span className="text-slate-400">LOW FEATURE VALUE</span>
+                  <span className="text-slate-500 dark:text-slate-400">LOW FEATURE VALUE</span>
                 </div>
                 <div className="flex items-center gap-1.5">
                   <span className="w-2.5 h-2.5 rounded bg-brand-danger" />
-                  <span className="text-slate-400">HIGH FEATURE VALUE</span>
+                  <span className="text-slate-500 dark:text-slate-400">HIGH FEATURE VALUE</span>
                 </div>
               </div>
             </div>
 
             {/* Simulated Beeswarm Rendering */}
-            <div className="border border-white/5 bg-slate-950/40 rounded-2xl p-6 relative">
+            <div className="border border-slate-200 dark:border-white/5 bg-slate-50 dark:bg-slate-955/40 rounded-2xl p-6 relative">
               
               {/* Vertical center indicator */}
-              <div className="absolute top-6 bottom-6 left-[60%] w-0.5 border-r border-dashed border-white/10 z-0 pointer-events-none" />
-              <div className="absolute top-2 left-[60%] -translate-x-1/2 text-[9px] font-bold text-slate-600 bg-slate-950 px-2 uppercase tracking-wide">
+              <div className="absolute top-6 bottom-6 left-[60%] w-0.5 border-r border-dashed border-slate-200 dark:border-white/10 z-0 pointer-events-none" />
+              <div className="absolute top-2 left-[60%] -translate-x-1/2 text-[9px] font-bold text-slate-500 dark:text-slate-600 bg-slate-50 dark:bg-slate-950 px-2 uppercase tracking-wide">
                 No Impact
               </div>
 
@@ -214,7 +214,7 @@ function Insights() {
                 
                 {/* Row 1: Contact Speed */}
                 <div className="flex items-center justify-between">
-                  <span className="w-36 text-slate-300 font-semibold truncate">Contact Latency</span>
+                  <span className="w-36 text-slate-700 dark:text-slate-300 font-semibold truncate">Contact Latency</span>
                   <div className="flex-1 h-8 relative flex items-center">
                     {/* Blue dots (low latency - positive impact) */}
                     <div className="absolute left-[62%] flex gap-1 animate-pulse">
@@ -234,7 +234,7 @@ function Insights() {
 
                 {/* Row 2: Follow-up Intensity */}
                 <div className="flex items-center justify-between">
-                  <span className="w-36 text-slate-300 font-semibold truncate">Follow-up Count</span>
+                  <span className="w-36 text-slate-700 dark:text-slate-300 font-semibold truncate">Follow-up Count</span>
                   <div className="flex-1 h-8 relative flex items-center">
                     {/* Red dots (high follow up - positive impact) */}
                     <div className="absolute left-[65%] flex gap-1">
@@ -253,7 +253,7 @@ function Insights() {
 
                 {/* Row 3: Lead Source: Referral */}
                 <div className="flex items-center justify-between">
-                  <span className="w-36 text-slate-300 font-semibold truncate">Source: Referral</span>
+                  <span className="w-36 text-slate-700 dark:text-slate-300 font-semibold truncate">Source: Referral</span>
                   <div className="flex-1 h-8 relative flex items-center">
                     {/* Red dots (Referral = True - positive impact) */}
                     <div className="absolute left-[70%] flex gap-1">
@@ -271,7 +271,7 @@ function Insights() {
 
                 {/* Row 4: Deal Value */}
                 <div className="flex items-center justify-between">
-                  <span className="w-36 text-slate-300 font-semibold truncate">Deal Value</span>
+                  <span className="w-36 text-slate-700 dark:text-slate-300 font-semibold truncate">Deal Value</span>
                   <div className="flex-1 h-8 relative flex items-center">
                     {/* Red dots (High Deal Value - positive impact) */}
                     <div className="absolute left-[61%] flex gap-1">
@@ -289,7 +289,7 @@ function Insights() {
               </div>
 
               {/* Bottom indicator labels */}
-              <div className="flex justify-between items-center mt-6 pt-4 border-t border-white/5 text-[9px] font-bold text-slate-500">
+              <div className="flex justify-between items-center mt-6 pt-4 border-t border-slate-200 dark:border-white/5 text-[9px] font-bold text-slate-500">
                 <span className="uppercase tracking-wide">← REDUCES PROBABILITY (NEGATIVE SHAP)</span>
                 <span className="uppercase tracking-wide">INCREASES PROBABILITY (POSITIVE SHAP) →</span>
               </div>
@@ -308,7 +308,7 @@ function Insights() {
             />
 
             <div>
-              <h2 className="text-base font-bold font-outfit text-white flex items-center gap-2">
+              <h2 className="text-base font-bold font-outfit text-slate-800 dark:text-white flex items-center gap-2">
                 <Sparkles size={16} className="text-brand-primary" />
                 Scoring Simulator Playground
               </h2>
@@ -324,7 +324,7 @@ function Insights() {
                     cx="80"
                     cy="80"
                     r={radius}
-                    className="stroke-slate-900 fill-none"
+                    className="stroke-slate-200 dark:stroke-slate-900 fill-none"
                     strokeWidth="10"
                   />
                   {/* Animated Score Progress Indicator */}
@@ -345,7 +345,7 @@ function Insights() {
 
                 {/* Score value center text */}
                 <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
-                  <span className="text-3xl font-black font-outfit tracking-tight text-white">{score}%</span>
+                  <span className="text-3xl font-black font-outfit tracking-tight text-slate-900 dark:text-white">{score}%</span>
                   <span className="text-[9px] font-bold text-slate-500 tracking-wider uppercase mt-0.5">CONVERSION</span>
                 </div>
               </div>
@@ -357,19 +357,19 @@ function Insights() {
             </div>
 
             {/* Recommended Action Detail Block */}
-            <div className="p-4 rounded-xl border border-white/5 bg-slate-950/50 space-y-1.5">
+            <div className="p-4 rounded-xl border border-slate-200 dark:border-white/5 bg-slate-50 dark:bg-slate-950/50 space-y-1.5">
               <span className="text-[9px] font-bold text-slate-500 uppercase tracking-wide">Recommended Action</span>
-              <p className="text-xs font-bold text-slate-200">{priority.action}</p>
-              <p className="text-[11px] text-slate-400 leading-relaxed">{priority.desc}</p>
+              <p className="text-xs font-bold text-slate-800 dark:text-slate-200">{priority.action}</p>
+              <p className="text-[11px] text-slate-600 dark:text-slate-400 leading-relaxed">{priority.desc}</p>
             </div>
 
             {/* Sliders and Controls Form */}
-            <div className="space-y-4 pt-4 border-t border-white/5">
+            <div className="space-y-4 pt-4 border-t border-slate-200 dark:border-white/5">
               
               {/* Lead Source Selector */}
               <div className="flex flex-col gap-1.5">
                 <div className="flex justify-between items-center">
-                  <label className="text-[10px] text-slate-400 font-semibold uppercase tracking-wider">Lead Source</label>
+                  <label className="text-[10px] text-slate-500 dark:text-slate-400 font-semibold uppercase tracking-wider">Lead Source</label>
                   <span className="text-[10px] font-bold text-brand-primary">{source}</span>
                 </div>
                 <select
@@ -388,7 +388,7 @@ function Insights() {
               {/* Product Interest Selector */}
               <div className="flex flex-col gap-1.5">
                 <div className="flex justify-between items-center">
-                  <label className="text-[10px] text-slate-400 font-semibold uppercase tracking-wider">Product Interest</label>
+                  <label className="text-[10px] text-slate-500 dark:text-slate-400 font-semibold uppercase tracking-wider">Product Interest</label>
                   <span className="text-[10px] font-bold text-brand-primary">{product}</span>
                 </div>
                 <select
@@ -406,7 +406,7 @@ function Insights() {
               {/* Contact Latency Range Slider */}
               <div className="flex flex-col gap-1.5">
                 <div className="flex justify-between items-center">
-                  <label className="text-[10px] text-slate-400 font-semibold uppercase tracking-wider">Contact Latency</label>
+                  <label className="text-[10px] text-slate-500 dark:text-slate-400 font-semibold uppercase tracking-wider">Contact Latency</label>
                   <span className="text-[10px] font-bold text-brand-primary">
                     {latency <= 0.5 ? 'Rapid (<12h)' : `${latency} Days`}
                   </span>
@@ -418,7 +418,7 @@ function Insights() {
                   step="0.1"
                   value={latency}
                   onChange={(e) => setLatency(parseFloat(e.target.value))}
-                  className="w-full accent-brand-primary cursor-pointer bg-slate-900 h-1.5 rounded-lg appearance-none"
+                  className="w-full accent-brand-primary cursor-pointer bg-slate-200 dark:bg-slate-900 h-1.5 rounded-lg appearance-none"
                 />
                 <span className="text-[9px] text-slate-500 italic mt-0.5">
                   Lower response times significantly lift conversion likelihood.
@@ -428,7 +428,7 @@ function Insights() {
               {/* Follow-up Count Slider */}
               <div className="flex flex-col gap-1.5">
                 <div className="flex justify-between items-center">
-                  <label className="text-[10px] text-slate-400 font-semibold uppercase tracking-wider">Follow-up Outreach</label>
+                  <label className="text-[10px] text-slate-500 dark:text-slate-400 font-semibold uppercase tracking-wider">Follow-up Outreach</label>
                   <span className="text-[10px] font-bold text-brand-primary">{followUps} touches</span>
                 </div>
                 <input
@@ -438,14 +438,14 @@ function Insights() {
                   step="1"
                   value={followUps}
                   onChange={(e) => setFollowUps(parseInt(e.target.value))}
-                  className="w-full accent-brand-primary cursor-pointer bg-slate-900 h-1.5 rounded-lg appearance-none"
+                  className="w-full accent-brand-primary cursor-pointer bg-slate-200 dark:bg-slate-900 h-1.5 rounded-lg appearance-none"
                 />
               </div>
 
               {/* Deal Value Slider */}
               <div className="flex flex-col gap-1.5">
                 <div className="flex justify-between items-center">
-                  <label className="text-[10px] text-slate-400 font-semibold uppercase tracking-wider">Estimated Deal Value</label>
+                  <label className="text-[10px] text-slate-500 dark:text-slate-400 font-semibold uppercase tracking-wider">Estimated Deal Value</label>
                   <span className="text-[10px] font-bold text-brand-primary">{formatCurrency(dealValue)}</span>
                 </div>
                 <input
@@ -455,7 +455,7 @@ function Insights() {
                   step="50000"
                   value={dealValue}
                   onChange={(e) => setDealValue(parseInt(e.target.value))}
-                  className="w-full accent-brand-primary cursor-pointer bg-slate-900 h-1.5 rounded-lg appearance-none"
+                  className="w-full accent-brand-primary cursor-pointer bg-slate-200 dark:bg-slate-900 h-1.5 rounded-lg appearance-none"
                 />
               </div>
 
