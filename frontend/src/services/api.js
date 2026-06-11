@@ -420,6 +420,18 @@ apiClient.interceptors.response.use(
       };
     }
 
+    // Handle Lead Detail fallback
+    const leadDetailMatch = config?.url?.match(/\/leads\/([A-Za-z0-9\-]+)/);
+    if (leadDetailMatch && (config.method === 'get' || config.method === 'GET')) {
+      const leadId = leadDetailMatch[1];
+      const lead = MOCK_DATA.leads.find(l => l.lead_id === leadId);
+      if (lead) {
+        return { success: true, data: lead, isOfflineMock: true };
+      } else {
+        return Promise.reject({ response: { status: 404, data: { success: false, message: "Lead not found" } } });
+      }
+    }
+
     // Handle Lead Update fallback (updates status, re-scores lead, and syncs summary)
     const leadUpdateMatch = config?.url?.match(/\/leads\/([A-Za-z0-9\-]+)/);
     if (leadUpdateMatch && (config.method === 'put' || config.method === 'PUT')) {
