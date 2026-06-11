@@ -1,0 +1,17 @@
+# Netlify configuration file for monorepo build
+
+[build]
+  # Navigate to the frontend directory before building
+  base = "frontend"
+  
+  # Run the build command inside the frontend directory
+  command = "npm run build"
+  
+  # Deploy the compiled dist folder inside the frontend directory
+  publish = "dist"
+
+# Configure redirects for React SPA router support
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
