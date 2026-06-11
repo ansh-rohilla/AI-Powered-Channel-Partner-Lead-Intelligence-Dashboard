@@ -64,6 +64,17 @@ def create_app(config_class=Config):
         # Create database tables if they do not exist
         db.create_all()
         
+        # Check if the database is empty and auto-seed if needed
+        try:
+            from app.models.partner import Partner
+            if db.session.query(Partner).count() == 0:
+                app.logger.info("Database is empty. Running auto-seeding...")
+                from data.seed_db import seed_db_core
+                seed_db_core()
+                app.logger.info("Database auto-seeded successfully.")
+        except Exception as e:
+            app.logger.error(f"Failed to auto-seed database at startup: {str(e)}")
+            
         # Pre-load ML models at startup to ensure service readiness
         try:
             from app.services.prediction_service import load_artifacts
