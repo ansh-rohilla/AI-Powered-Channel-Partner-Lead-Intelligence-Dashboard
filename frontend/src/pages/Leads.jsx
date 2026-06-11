@@ -18,6 +18,82 @@ import {
 } from 'lucide-react';
 import { leadService, partnerService } from '../services/api';
 
+const LeadCard = React.memo(({ lead, colId, getScoreColor, formatCurrency, setSelectedLeadId, handleDragStart, handleQuickMove }) => {
+  const colors = getScoreColor(lead.ml_score);
+  return (
+    <div 
+      draggable="true"
+      onDragStart={(e) => handleDragStart(e, lead.lead_id)}
+      onClick={() => setSelectedLeadId(lead.lead_id)}
+      className="glass-card p-4 hover:border-white/10 hover:shadow-md cursor-pointer relative group transition-all duration-300 active:cursor-grabbing"
+    >
+      <div className="space-y-2">
+        <div className="flex items-start justify-between gap-2">
+          <span className="text-[11px] font-bold text-white leading-tight truncate flex-1 group-hover:text-brand-primary transition-colors font-sans">
+            {lead.company_name}
+          </span>
+          <span className={`text-[8px] px-1.5 py-0.5 rounded font-extrabold tracking-wider font-outfit ${colors.bg} ${colors.text}`}>
+            {lead.ml_score ? `${Math.round(lead.ml_score)}%` : 'N/A'}
+          </span>
+        </div>
+        
+        <div className="flex items-center justify-between text-[10px] text-slate-400">
+          <span className="font-outfit font-semibold">{formatCurrency(lead.deal_value_inr)}</span>
+          <div className="flex items-center gap-1">
+            <MapPin size={8} />
+            <span>{lead.region}</span>
+          </div>
+        </div>
+
+        {/* Quick movement selectors */}
+        <div className="pt-2 border-t border-white/5 flex items-center justify-between opacity-0 group-hover:opacity-100 transition-opacity">
+          <span className="text-[8px] text-slate-500 uppercase font-semibold">Quick Move</span>
+          <div className="flex items-center gap-1">
+            {colId === 'New' && (
+              <button 
+                onClick={(e) => { e.stopPropagation(); handleQuickMove(lead, 'Contacted'); }}
+                className="p-1 rounded bg-slate-900 hover:bg-brand-primary/20 text-slate-400 hover:text-white"
+                title="Move to Contacted"
+              >
+                <ArrowRight size={10} />
+              </button>
+            )}
+            {colId === 'Contacted' && (
+              <button 
+                onClick={(e) => { e.stopPropagation(); handleQuickMove(lead, 'Qualified'); }}
+                className="p-1 rounded bg-slate-900 hover:bg-brand-primary/20 text-slate-400 hover:text-white"
+                title="Move to Qualified"
+              >
+                <ArrowRight size={10} />
+              </button>
+            )}
+            {colId === 'Qualified' && (
+              <div className="flex gap-1">
+                <button 
+                  onClick={(e) => { e.stopPropagation(); handleQuickMove(lead, 'Converted'); }}
+                  className="px-1.5 py-0.5 rounded bg-slate-900 hover:bg-brand-success/20 text-slate-400 hover:text-brand-success text-[8px] font-bold"
+                  title="Close Won"
+                >
+                  Won
+                </button>
+                <button 
+                  onClick={(e) => { e.stopPropagation(); handleQuickMove(lead, 'Lost'); }}
+                  className="px-1.5 py-0.5 rounded bg-slate-900 hover:bg-brand-danger/20 text-slate-400 hover:text-brand-danger text-[8px] font-bold"
+                  title="Close Lost"
+                >
+                  Lost
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+});
+
+LeadCard.displayName = 'LeadCard';
+
 function Leads() {
   const [leads, setLeads] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -384,80 +460,18 @@ function Leads() {
                       : 'bg-slate-950/20 border-white/5'
                   }`}
                 >
-                  {colLeads.map(lead => {
-                    const colors = getScoreColor(lead.ml_score);
-                    return (
-                      <div 
-                        key={lead.lead_id}
-                        draggable="true"
-                        onDragStart={(e) => handleDragStart(e, lead.lead_id)}
-                        onClick={() => setSelectedLeadId(lead.lead_id)}
-                        className="glass-card p-4 hover:border-white/10 hover:shadow-md cursor-pointer relative group transition-all duration-300 active:cursor-grabbing"
-                      >
-                        <div className="space-y-2">
-                          <div className="flex items-start justify-between gap-2">
-                            <span className="text-[11px] font-bold text-white leading-tight truncate flex-1 group-hover:text-brand-primary transition-colors">
-                              {lead.company_name}
-                            </span>
-                            <span className={`text-[8px] px-1.5 py-0.5 rounded font-extrabold tracking-wider ${colors.bg} ${colors.text}`}>
-                              {lead.ml_score ? `${Math.round(lead.ml_score)}%` : 'N/A'}
-                            </span>
-                          </div>
-                          
-                          <div className="flex items-center justify-between text-[10px] text-slate-400">
-                            <span className="font-outfit font-semibold">{formatCurrency(lead.deal_value_inr)}</span>
-                            <div className="flex items-center gap-1">
-                              <MapPin size={8} />
-                              <span>{lead.region}</span>
-                            </div>
-                          </div>
-
-                          {/* Quick movement selectors */}
-                          <div className="pt-2 border-t border-white/5 flex items-center justify-between opacity-0 group-hover:opacity-100 transition-opacity">
-                            <span className="text-[8px] text-slate-500 uppercase font-semibold">Quick Move</span>
-                            <div className="flex items-center gap-1">
-                              {col.id === 'New' && (
-                                <button 
-                                  onClick={(e) => { e.stopPropagation(); handleQuickMove(lead, 'Contacted'); }}
-                                  className="p-1 rounded bg-slate-900 hover:bg-brand-primary/20 text-slate-400 hover:text-white"
-                                  title="Move to Contacted"
-                                >
-                                  <ArrowRight size={10} />
-                                </button>
-                              )}
-                              {col.id === 'Contacted' && (
-                                <button 
-                                  onClick={(e) => { e.stopPropagation(); handleQuickMove(lead, 'Qualified'); }}
-                                  className="p-1 rounded bg-slate-900 hover:bg-brand-primary/20 text-slate-400 hover:text-white"
-                                  title="Move to Qualified"
-                                >
-                                  <ArrowRight size={10} />
-                                </button>
-                              )}
-                              {col.id === 'Qualified' && (
-                                <div className="flex gap-1">
-                                  <button 
-                                    onClick={(e) => { e.stopPropagation(); handleQuickMove(lead, 'Converted'); }}
-                                    className="px-1.5 py-0.5 rounded bg-slate-900 hover:bg-brand-success/20 text-slate-400 hover:text-brand-success text-[8px] font-bold"
-                                    title="Close Won"
-                                  >
-                                    Won
-                                  </button>
-                                  <button 
-                                    onClick={(e) => { e.stopPropagation(); handleQuickMove(lead, 'Lost'); }}
-                                    className="px-1.5 py-0.5 rounded bg-slate-900 hover:bg-brand-danger/20 text-slate-400 hover:text-brand-danger text-[8px] font-bold"
-                                    title="Close Lost"
-                                  >
-                                    Lost
-                                  </button>
-                                </div>
-                              )}
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    );
-                  })}
+                  {colLeads.map(lead => (
+                    <LeadCard 
+                      key={lead.lead_id}
+                      lead={lead}
+                      colId={col.id}
+                      getScoreColor={getScoreColor}
+                      formatCurrency={formatCurrency}
+                      setSelectedLeadId={setSelectedLeadId}
+                      handleDragStart={handleDragStart}
+                      handleQuickMove={handleQuickMove}
+                    />
+                  ))}
                   {colLeads.length === 0 && (
                     <div className="h-full flex items-center justify-center p-6 text-center text-[10px] text-slate-600 border border-dashed border-white/5 rounded-xl">
                       No Leads in this stage.

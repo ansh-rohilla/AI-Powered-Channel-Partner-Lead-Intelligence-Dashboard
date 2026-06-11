@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Outlet, NavLink, useLocation } from 'react-router-dom';
+import logo from '../assets/logo.png';
 import { 
   LayoutDashboard, 
   Users, 
@@ -55,9 +56,7 @@ function Layout() {
 
         {/* Brand Header */}
         <div className="h-20 flex items-center px-6 border-b border-white/5 gap-3">
-          <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-brand-primary to-brand-purple flex items-center justify-center shadow-lg shadow-brand-primary/20">
-            <span className="font-outfit font-black text-white text-base">V</span>
-          </div>
+          <img src={logo} alt="Vyana Logo" className="w-8 h-8 object-contain rounded-lg shadow-lg" />
           {!collapsed && (
             <span className="font-outfit font-bold text-lg tracking-wider bg-gradient-to-r from-white to-slate-300 bg-clip-text text-transparent">
               Vyana AI
@@ -132,9 +131,7 @@ function Layout() {
         } flex flex-col`}
       >
         <div className="h-20 flex items-center px-6 border-b border-white/5 gap-3">
-          <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-brand-primary to-brand-purple flex items-center justify-center shadow-lg">
-            <span className="font-outfit font-black text-white text-base">V</span>
-          </div>
+          <img src={logo} alt="Vyana Logo" className="w-8 h-8 object-contain rounded-lg shadow-lg" />
           <span className="font-outfit font-bold text-lg text-white">Vyana AI</span>
         </div>
 

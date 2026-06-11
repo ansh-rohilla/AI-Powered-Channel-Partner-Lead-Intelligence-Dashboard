@@ -329,9 +329,32 @@ function Reports() {
 
       {/* Section 2: Metric checklist (No print) */}
       <div className="glass-card p-6 space-y-4 no-print">
-        <div className="flex items-center gap-2">
-          <Sliders size={14} className="text-brand-primary" />
-          <h2 className="text-xs font-bold text-slate-300 uppercase tracking-wider">Custom Fields Selection Checklist</h2>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <Sliders size={14} className="text-brand-primary" />
+            <h2 className="text-xs font-bold text-slate-300 uppercase tracking-wider">Custom Fields Selection Checklist</h2>
+          </div>
+          <div className="flex items-center gap-2 text-[10px] font-bold">
+            <button
+              onClick={() => setSelectedMetrics(prev => ({
+                ...prev,
+                [dataType]: availableColumns[dataType].map(c => c.id)
+              }))}
+              className="text-brand-primary hover:underline"
+            >
+              Select All
+            </button>
+            <span className="text-slate-600">|</span>
+            <button
+              onClick={() => setSelectedMetrics(prev => ({
+                ...prev,
+                [dataType]: []
+              }))}
+              className="text-slate-400 hover:underline"
+            >
+              Clear All
+            </button>
+          </div>
         </div>
         <div className="flex flex-wrap gap-3">
           {availableColumns[dataType].map(col => {

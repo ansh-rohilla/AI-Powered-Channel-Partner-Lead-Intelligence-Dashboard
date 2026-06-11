@@ -9,6 +9,7 @@ from app.schemas.lead_schema import LeadSchema
 from app.services.tier_service import calculate_tier
 from marshmallow import ValidationError
 from datetime import datetime, date
+from app import cache
 
 uploads_bp = Blueprint('uploads', __name__)
 
@@ -47,15 +48,23 @@ def upload_partners():
     try:
         # Load into Pandas DataFrame
         filename = file.filename.lower()
-        if filename.endswith('.csv'):
-            df = pd.read_csv(file)
-        else:
-            df = pd.read_excel(file)
+        try:
+            if filename.endswith('.csv'):
+                df = pd.read_csv(file)
+            else:
+                df = pd.read_excel(file)
+        except (pd.errors.EmptyDataError, ValueError):
+            return jsonify({"success": False, "message": "The uploaded file is empty or invalid."}), 400
+
+        if df.empty:
+            return jsonify({"success": False, "message": "The uploaded file contains no data rows."}), 400
 
         partner_schema = PartnerSchema()
         errors = []
         inserted = 0
         updated = 0
+        processed_emails = set()
+        processed_ids = set()
 
         # Enforce column schema checks
         required_cols = ['company_name', 'contact_name', 'contact_email', 'region', 'city', 'onboarded_date']
@@ -73,6 +82,21 @@ def upload_partners():
                 row_dict['last_activity_date'] = parse_date_safely(row_dict['last_activity_date'])
 
             row_num = index + 2  # 1-based index (accounting for header row)
+
+            email = row_dict.get('contact_email')
+            p_id = row_dict.get('partner_id')
+
+            if email in processed_emails:
+                errors.append({"row": row_num, "errors": {"contact_email": ["Duplicate contact_email in the same upload file."]}})
+                continue
+            if p_id and p_id in processed_ids:
+                errors.append({"row": row_num, "errors": {"partner_id": ["Duplicate partner_id in the same upload file."]}})
+                continue
+
+            if email:
+                processed_emails.add(email)
+            if p_id:
+                processed_ids.add(p_id)
 
             try:
                 # Validate using Marshmallow schema
@@ -141,6 +165,10 @@ def upload_partners():
 
         if inserted > 0 or updated > 0:
             db.session.commit()
+            try:
+                cache.clear()
+            except Exception:
+                pass
 
         success = (inserted > 0 or updated > 0)
         return jsonify({
@@ -170,15 +198,23 @@ def upload_leads():
 
     try:
         filename = file.filename.lower()
-        if filename.endswith('.csv'):
-            df = pd.read_csv(file)
-        else:
-            df = pd.read_excel(file)
+        try:
+            if filename.endswith('.csv'):
+                df = pd.read_csv(file)
+            else:
+                df = pd.read_excel(file)
+        except (pd.errors.EmptyDataError, ValueError):
+            return jsonify({"success": False, "message": "The uploaded file is empty or invalid."}), 400
+
+        if df.empty:
+            return jsonify({"success": False, "message": "The uploaded file contains no data rows."}), 400
 
         lead_schema = LeadSchema()
         errors = []
         inserted = 0
         updated = 0
+        processed_emails = set()
+        processed_ids = set()
 
         # Enforce column schema checks
         required_cols = ['partner_id', 'company_name', 'contact_name', 'contact_email', 
@@ -199,6 +235,21 @@ def upload_leads():
                 row_dict['conversion_date'] = parse_date_safely(row_dict['conversion_date'])
 
             row_num = index + 2  # 1-based index (accounting for header row)
+
+            email = row_dict.get('contact_email')
+            l_id = row_dict.get('lead_id')
+
+            if email in processed_emails:
+                errors.append({"row": row_num, "errors": {"contact_email": ["Duplicate contact_email in the same upload file."]}})
+                continue
+            if l_id and l_id in processed_ids:
+                errors.append({"row": row_num, "errors": {"lead_id": ["Duplicate lead_id in the same upload file."]}})
+                continue
+
+            if email:
+                processed_emails.add(email)
+            if l_id:
+                processed_ids.add(l_id)
 
             try:
                 # Validate using Marshmallow schema
@@ -280,6 +331,10 @@ def upload_leads():
 
         if inserted > 0 or updated > 0:
             db.session.commit()
+            try:
+                cache.clear()
+            except Exception:
+                pass
 
         success = (inserted > 0 or updated > 0)
         return jsonify({
