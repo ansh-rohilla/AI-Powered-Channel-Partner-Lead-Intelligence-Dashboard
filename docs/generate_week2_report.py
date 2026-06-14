@@ -59,17 +59,8 @@ def page_fn_first(canv, doc):
     pass
 
 def page_fn_later(canv, doc):
-    w, h = A4
-    # Thin horizontal footer separator line
-    canv.setStrokeColor(GRAY_MD)
-    canv.setLineWidth(0.4)
-    canv.line(22*mm, 15*mm, w-22*mm, 15*mm)
-    
-    # Footer text
-    canv.setFillColor(GRAY_DK)
-    canv.setFont("Helvetica", 7.5)
-    canv.drawString(22*mm, 10*mm, "Vyana Innovations Pvt. Ltd. — Ansh Rohilla | June 2026")
-    canv.drawRightString(w-22*mm, 10*mm, f"Page {doc.page}")
+    # Footers/trailers removed
+    pass
 
 # ── Helpers ──────────────────────────────────────────────────────
 def day_banner(day_num, title, subtitle=""):
