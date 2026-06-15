@@ -53,17 +53,37 @@ def create_app(config_class=Config):
     from app.routes.uploads import uploads_bp
     from app.routes.analytics import analytics_bp
     from app.routes.predictions import predictions_bp
+    from app.routes.auth import auth_bp
 
     app.register_blueprint(partners_bp, url_prefix='/api/partners')
     app.register_blueprint(leads_bp, url_prefix='/api/leads')
     app.register_blueprint(uploads_bp, url_prefix='/api/upload')
     app.register_blueprint(analytics_bp, url_prefix='/api/analytics')
     app.register_blueprint(predictions_bp, url_prefix='/api/predict')
+    app.register_blueprint(auth_bp, url_prefix='/api/auth')
 
     with app.app_context():
         # Create database tables if they do not exist
         db.create_all()
         
+        # Check if users are empty and seed default admin
+        try:
+            from app.models.user import User
+            if db.session.query(User).count() == 0:
+                app.logger.info("No users found. Seeding default administrator...")
+                admin = User(
+                    name="Alex Chen",
+                    role="Sales Operations Director",
+                    email="alex.chen@vyana.ai",
+                    avatar_url="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=80&fit=crop&q=80"
+                )
+                admin.set_password("password123")
+                db.session.add(admin)
+                db.session.commit()
+                app.logger.info("Default administrator seeded successfully.")
+        except Exception as e:
+            app.logger.error(f"Failed to auto-seed default administrator at startup: {str(e)}")
+
         # Check if the database is empty and auto-seed if needed
         try:
             from app.models.partner import Partner

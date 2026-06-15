@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Outlet, NavLink, useLocation } from 'react-router-dom';
+import { Outlet, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import logo from '../assets/logo.png';
 import { 
   LayoutDashboard, 
@@ -12,13 +12,69 @@ import {
   ChevronLeft,
   ChevronRight,
   Sun,
-  Moon
+  Moon,
+  LogOut
 } from 'lucide-react';
+import { authService } from '../services/api';
 
 function Layout() {
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
+
+  // Load user data dynamically
+  const [user, setUser] = useState(() => {
+    try {
+      const stored = localStorage.getItem('user');
+      return stored ? JSON.parse(stored) : { 
+        name: 'Alex Chen', 
+        role: 'Sales Operations Director', 
+        avatar_url: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=80&fit=crop&q=80' 
+      };
+    } catch (e) {
+      return { 
+        name: 'Alex Chen', 
+        role: 'Sales Operations Director', 
+        avatar_url: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=80&fit=crop&q=80' 
+      };
+    }
+  });
+
+  // Verify session validity on mount
+  useEffect(() => {
+    const checkSession = async () => {
+      try {
+        const response = await authService.getCurrentUser();
+        if (response.success && response.user) {
+          setUser(response.user);
+          localStorage.setItem('user', JSON.stringify(response.user));
+        }
+      } catch (err) {
+        console.error('Session validation failed:', err);
+        if (err.response?.status === 401) {
+          localStorage.removeItem('token');
+          localStorage.removeItem('user');
+          navigate('/login', { replace: true });
+        }
+      }
+    };
+
+    if (localStorage.getItem('token')) {
+      checkSession();
+    }
+  }, [navigate]);
+
+  const handleLogout = async () => {
+    try {
+      await authService.logout();
+    } catch (err) {
+      console.warn('Backend logout call failed/offline, clearing local session anyway.', err);
+    }
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    navigate('/login', { replace: true });
+  };
 
   // Initialize theme from localStorage or system setting (default dark)
   const [theme, setTheme] = useState(() => {
@@ -123,17 +179,28 @@ function Layout() {
         </nav>
 
         {/* User profile section */}
-        <div className="p-4 border-t border-slate-200/60 dark:border-white/5 flex items-center gap-3">
-          <img
-            src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=80&fit=crop&q=80"
-            alt="Profile Avatar"
-            className="w-9 h-9 rounded-xl object-cover border border-brand-primary/20 shadow-md shadow-brand-primary/10"
-          />
+        <div className="p-4 border-t border-slate-200/60 dark:border-white/5 flex items-center justify-between gap-3">
+          <div className="flex items-center gap-3 min-w-0">
+            <img
+              src={user.avatar_url || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=80&fit=crop&q=80"}
+              alt="Profile Avatar"
+              className="w-9 h-9 rounded-xl object-cover border border-brand-primary/20 shadow-md shadow-brand-primary/10 shrink-0"
+            />
+            {!collapsed && (
+              <div className="flex-1 min-w-0">
+                <p className="text-xs font-semibold text-slate-800 dark:text-slate-200 truncate">{user.name}</p>
+                <p className="text-[10px] text-slate-500 truncate">{user.role}</p>
+              </div>
+            )}
+          </div>
           {!collapsed && (
-            <div className="flex-1 min-w-0">
-              <p className="text-xs font-semibold text-slate-800 dark:text-slate-200 truncate">Alex Chen</p>
-              <p className="text-[10px] text-slate-500 truncate">Sales Operations Director</p>
-            </div>
+            <button
+              onClick={handleLogout}
+              title="Logout"
+              className="p-1.5 text-slate-400 hover:text-rose-500 dark:hover:text-rose-400 hover:bg-slate-100 dark:hover:bg-slate-900 rounded-lg transition-colors duration-200 shrink-0"
+            >
+              <LogOut size={16} />
+            </button>
           )}
         </div>
       </aside>
@@ -178,16 +245,26 @@ function Layout() {
           })}
         </nav>
 
-        <div className="p-4 border-t border-slate-200/60 dark:border-white/5 flex items-center gap-3">
-          <img
-            src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=80&fit=crop&q=80"
-            alt="Profile Avatar"
-            className="w-9 h-9 rounded-xl object-cover border border-brand-primary/20"
-          />
-          <div className="flex-1 min-w-0">
-            <p className="text-xs font-semibold text-slate-800 dark:text-slate-200 truncate">Alex Chen</p>
-            <p className="text-[10px] text-slate-500 truncate">Sales Operations Director</p>
+        {/* User profile section */}
+        <div className="p-4 border-t border-slate-200/60 dark:border-white/5 flex items-center justify-between gap-3">
+          <div className="flex items-center gap-3 min-w-0">
+            <img
+              src={user.avatar_url || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=80&fit=crop&q=80"}
+              alt="Profile Avatar"
+              className="w-9 h-9 rounded-xl object-cover border border-brand-primary/20 shadow-md shadow-brand-primary/10 shrink-0"
+            />
+            <div className="flex-1 min-w-0">
+              <p className="text-xs font-semibold text-slate-800 dark:text-slate-200 truncate">{user.name}</p>
+              <p className="text-[10px] text-slate-500 truncate">{user.role}</p>
+            </div>
           </div>
+          <button
+            onClick={handleLogout}
+            title="Logout"
+            className="p-1.5 text-slate-400 hover:text-rose-500 dark:hover:text-rose-400 hover:bg-slate-100 dark:hover:bg-slate-900 rounded-lg transition-colors duration-200 shrink-0"
+          >
+            <LogOut size={16} />
+          </button>
         </div>
       </aside>
 

@@ -293,6 +293,20 @@ const MOCK_DATA = {
   ]
 };
 
+// Request Interceptor to attach Auth token
+apiClient.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      config.headers['Authorization'] = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
 // Response Interceptor with automatic offline fallback handling
 apiClient.interceptors.response.use(
   (response) => {
@@ -300,6 +314,18 @@ apiClient.interceptors.response.use(
   },
   async (error) => {
     const { config } = error;
+    
+    // If we receive a 401 Unauthorized error from the backend, clear auth state and redirect to login
+    if (error.response && error.response.status === 401) {
+      console.error("[Auth Error] Unauthorized request - clearing token and redirecting.");
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      if (!window.location.pathname.endsWith('/login')) {
+        window.location.href = '/login';
+      }
+      return Promise.reject(error);
+    }
+    
     console.warn(`[API Connection warning] Request failed: ${config?.method?.toUpperCase()} ${config?.url}. Falling back to client-side offline mock data.`);
     
     // Handle Summary fallback
@@ -496,6 +522,12 @@ export const leadService = {
   createLead: (data) => apiClient.post('/leads', data),
   updateLead: (id, data) => apiClient.put(`/leads/${id}`, data),
   deleteLead: (id) => apiClient.delete(`/leads/${id}`)
+};
+
+export const authService = {
+  login: (credentials) => apiClient.post('/auth/login', credentials),
+  getCurrentUser: () => apiClient.get('/auth/me'),
+  logout: () => apiClient.post('/auth/logout')
 };
 
 export default apiClient;

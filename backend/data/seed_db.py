@@ -10,6 +10,7 @@ from app import create_app
 from app.database import db
 from app.models.partner import Partner
 from app.models.lead import Lead
+from app.models.user import User
 
 def parse_date(date_str):
     if pd.isna(date_str) or not date_str or str(date_str).strip() in ('', 'nan', 'None'):
@@ -26,6 +27,19 @@ def seed_db_core():
     print("Clearing existing data...")
     db.session.query(Lead).delete()
     db.session.query(Partner).delete()
+    db.session.query(User).delete()
+    db.session.commit()
+
+    # Seed default user
+    print("Seeding default administrator user...")
+    admin = User(
+        name="Alex Chen",
+        role="Sales Operations Director",
+        email="alex.chen@vyana.ai",
+        avatar_url="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=80&fit=crop&q=80"
+    )
+    admin.set_password("password123")
+    db.session.add(admin)
     db.session.commit()
 
     # Load CSVs

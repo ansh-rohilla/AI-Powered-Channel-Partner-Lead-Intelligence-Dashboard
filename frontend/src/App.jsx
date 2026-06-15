@@ -1,12 +1,21 @@
 import React, { lazy, Suspense } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Layout from './components/Layout.jsx';
+import Login from './pages/Login.jsx';
 
 const Overview = lazy(() => import('./pages/Overview.jsx'));
 const Partners = lazy(() => import('./pages/Partners.jsx'));
 const Leads = lazy(() => import('./pages/Leads.jsx'));
 const Insights = lazy(() => import('./pages/Insights.jsx'));
 const Reports = lazy(() => import('./pages/Reports.jsx'));
+
+const ProtectedRoute = ({ children }) => {
+  const token = localStorage.getItem('token');
+  if (!token) {
+    return <Navigate to="/login" replace />;
+  }
+  return children;
+};
 
 function App() {
   return (
@@ -20,7 +29,8 @@ function App() {
         </div>
       }>
         <Routes>
-          <Route path="/" element={<Layout />}>
+          <Route path="/login" element={<Login />} />
+          <Route path="/" element={<ProtectedRoute><Layout /></ProtectedRoute>}>
             <Route index element={<Overview />} />
             <Route path="partners" element={<Partners />} />
             <Route path="leads" element={<Leads />} />

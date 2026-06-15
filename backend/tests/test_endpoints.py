@@ -279,5 +279,52 @@ class TestEndpoints(unittest.TestCase):
         self.assertIn('deal_value_inr', data_invalid['details'])
         self.assertIn('region', data_invalid['details'])
 
+    def test_auth_workflow(self):
+        # 1. Login with invalid credentials
+        res_invalid = self.client.post('/api/auth/login', json={
+            "email": "alex.chen@vyana.ai",
+            "password": "wrongpassword"
+        })
+        self.assertEqual(res_invalid.status_code, 401)
+        data_invalid = json.loads(res_invalid.data)
+        self.assertFalse(data_invalid['success'])
+
+        # 2. Login with valid credentials
+        res_valid = self.client.post('/api/auth/login', json={
+            "email": "alex.chen@vyana.ai",
+            "password": "password123"
+        })
+        self.assertEqual(res_valid.status_code, 200)
+        data_valid = json.loads(res_valid.data)
+        self.assertTrue(data_valid['success'])
+        self.assertIn('token', data_valid)
+        self.assertEqual(data_valid['user']['email'], "alex.chen@vyana.ai")
+        token = data_valid['token']
+
+        # 3. Get profile details with valid token
+        res_me = self.client.get('/api/auth/me', headers={
+            'Authorization': f'Bearer {token}'
+        })
+        self.assertEqual(res_me.status_code, 200)
+        data_me = json.loads(res_me.data)
+        self.assertTrue(data_me['success'])
+        self.assertEqual(data_me['user']['email'], "alex.chen@vyana.ai")
+
+        # 4. Get profile details with invalid token
+        res_me_invalid = self.client.get('/api/auth/me', headers={
+            'Authorization': 'Bearer invalidtoken'
+        })
+        self.assertEqual(res_me_invalid.status_code, 401)
+
+        # 5. Get profile details with missing token
+        res_me_missing = self.client.get('/api/auth/me')
+        self.assertEqual(res_me_missing.status_code, 401)
+
+        # 6. Logout
+        res_logout = self.client.post('/api/auth/logout')
+        self.assertEqual(res_logout.status_code, 200)
+        data_logout = json.loads(res_logout.data)
+        self.assertTrue(data_logout['success'])
+
 if __name__ == '__main__':
     unittest.main()
