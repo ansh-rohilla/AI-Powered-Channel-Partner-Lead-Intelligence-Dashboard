@@ -19,6 +19,19 @@ class TestEndpoints(unittest.TestCase):
         self.client = self.app.test_client()
         self.app_context = self.app.app_context()
         self.app_context.push()
+        
+        # Clear existing users and seed the test user to guarantee consistent test runs
+        from app.models.user import User
+        User.query.delete()
+        test_user = User(
+            name="Ansh Rohilla",
+            email="ansh.rohilla@vyana.ai",
+            role="Sales Operations Director",
+            avatar_url="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=80&fit=crop&q=80"
+        )
+        test_user.set_password("password123")
+        db.session.add(test_user)
+        db.session.commit()
 
     def tearDown(self):
         self.app_context.pop()
@@ -282,7 +295,7 @@ class TestEndpoints(unittest.TestCase):
     def test_auth_workflow(self):
         # 1. Login with invalid credentials
         res_invalid = self.client.post('/api/auth/login', json={
-            "email": "alex.chen@vyana.ai",
+            "email": "ansh.rohilla@vyana.ai",
             "password": "wrongpassword"
         })
         self.assertEqual(res_invalid.status_code, 401)
@@ -291,14 +304,14 @@ class TestEndpoints(unittest.TestCase):
 
         # 2. Login with valid credentials
         res_valid = self.client.post('/api/auth/login', json={
-            "email": "alex.chen@vyana.ai",
+            "email": "ansh.rohilla@vyana.ai",
             "password": "password123"
         })
         self.assertEqual(res_valid.status_code, 200)
         data_valid = json.loads(res_valid.data)
         self.assertTrue(data_valid['success'])
         self.assertIn('token', data_valid)
-        self.assertEqual(data_valid['user']['email'], "alex.chen@vyana.ai")
+        self.assertEqual(data_valid['user']['email'], "ansh.rohilla@vyana.ai")
         token = data_valid['token']
 
         # 3. Get profile details with valid token
@@ -308,7 +321,7 @@ class TestEndpoints(unittest.TestCase):
         self.assertEqual(res_me.status_code, 200)
         data_me = json.loads(res_me.data)
         self.assertTrue(data_me['success'])
-        self.assertEqual(data_me['user']['email'], "alex.chen@vyana.ai")
+        self.assertEqual(data_me['user']['email'], "ansh.rohilla@vyana.ai")
 
         # 4. Get profile details with invalid token
         res_me_invalid = self.client.get('/api/auth/me', headers={

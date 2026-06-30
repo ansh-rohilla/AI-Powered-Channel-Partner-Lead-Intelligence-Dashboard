@@ -28,13 +28,13 @@ function Layout() {
     try {
       const stored = localStorage.getItem('user');
       return stored ? JSON.parse(stored) : { 
-        name: 'Alex Chen', 
+        name: 'Ansh Rohilla', 
         role: 'Sales Operations Director', 
         avatar_url: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=80&fit=crop&q=80' 
       };
     } catch (e) {
       return { 
-        name: 'Alex Chen', 
+        name: 'Ansh Rohilla', 
         role: 'Sales Operations Director', 
         avatar_url: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=80&fit=crop&q=80' 
       };

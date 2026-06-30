@@ -72,9 +72,9 @@ def create_app(config_class=Config):
             if db.session.query(User).count() == 0:
                 app.logger.info("No users found. Seeding default administrator...")
                 admin = User(
-                    name="Alex Chen",
+                    name="Ansh Rohilla",
                     role="Sales Operations Director",
-                    email="alex.chen@vyana.ai",
+                    email="ansh.rohilla@vyana.ai",
                     avatar_url="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=80&fit=crop&q=80"
                 )
                 admin.set_password("password123")

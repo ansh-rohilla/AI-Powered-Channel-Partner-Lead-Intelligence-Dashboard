@@ -44,11 +44,11 @@ const Login = () => {
       const errMsg = err.response?.data?.message || 'Connection failed. Falling back to offline demo...';
       
       // Fallback offline login for presentation/demo safety
-      if (email.trim().toLowerCase() === 'alex.chen@vyana.ai' && password === 'password123') {
+      if (email.trim().toLowerCase() === 'ansh.rohilla@vyana.ai' && password === 'password123') {
         const mockUser = {
           id: 'u-mock-admin-2026',
-          email: 'alex.chen@vyana.ai',
-          name: 'Alex Chen',
+          email: 'ansh.rohilla@vyana.ai',
+          name: 'Ansh Rohilla',
           role: 'Sales Operations Director',
           avatar_url: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=80&fit=crop&q=80'
         };
