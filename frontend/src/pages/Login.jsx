@@ -103,7 +103,7 @@ const Login = () => {
                 </div>
                 <input
                   type="email"
-                  placeholder="alex.chen@vyana.ai"
+                  placeholder="name@company.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className="w-full bg-slate-50 dark:bg-slate-950/40 border border-slate-200 dark:border-white/5 focus:border-brand-primary dark:focus:border-brand-primary/50 focus:ring-4 focus:ring-brand-primary/10 rounded-2xl py-3 pl-12 pr-4 text-sm text-slate-800 dark:text-slate-200 placeholder:text-slate-400 outline-none transition-all duration-200"
@@ -156,12 +156,6 @@ const Login = () => {
               )}
             </button>
           </form>
-
-          {/* Quick Demo Info Alert */}
-          <div className="mt-6 pt-5 border-t border-slate-200/60 dark:border-white/5 flex items-center gap-3 text-[11px] text-slate-500 dark:text-slate-400">
-            <Sparkles className="w-4 h-4 text-amber-500 shrink-0" />
-            <span>Demo: use <b>alex.chen@vyana.ai</b> and <b>password123</b></span>
-          </div>
         </div>
 
         {/* Footer info */}
