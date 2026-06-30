@@ -282,13 +282,13 @@ function Reports() {
         {/* Start Date */}
         <div className="flex flex-col gap-2">
           <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">Start Date</label>
-          <div className="relative">
-            <Calendar size={14} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" />
+          <div className="flex items-center glass-input gap-3 w-full focus-within:border-brand-primary/50 focus-within:ring-1 focus-within:ring-brand-primary/50">
+            <Calendar size={14} className="text-slate-500 shrink-0" />
             <input
               type="date"
               value={startDate}
               onChange={(e) => setStartDate(e.target.value)}
-              className="w-full glass-input pl-11 text-xs py-2"
+              className="bg-transparent border-none outline-none text-xs w-full p-0 text-slate-900 dark:text-slate-100 focus:ring-0 focus:outline-none"
             />
           </div>
         </div>
@@ -296,13 +296,13 @@ function Reports() {
         {/* End Date */}
         <div className="flex flex-col gap-2">
           <label className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">End Date</label>
-          <div className="relative">
-            <Calendar size={14} className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500" />
+          <div className="flex items-center glass-input gap-3 w-full focus-within:border-brand-primary/50 focus-within:ring-1 focus-within:ring-brand-primary/50">
+            <Calendar size={14} className="text-slate-500 shrink-0" />
             <input
               type="date"
               value={endDate}
               onChange={(e) => setEndDate(e.target.value)}
-              className="w-full glass-input pl-11 text-xs py-2"
+              className="bg-transparent border-none outline-none text-xs w-full p-0 text-slate-900 dark:text-slate-100 focus:ring-0 focus:outline-none"
             />
           </div>
         </div>
